@@ -1,0 +1,1225 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RuruAlbernEdu - Kurikulum Merdeka / Kurikulum Nasional & Taksonomi Bloom</title>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Plus Jakarta Sans', 'sans-serif']
+                    },
+                    colors: {
+                        brand: {
+                            50: '#eef2ff',
+                            100: '#e0e7ff',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                            800: '#3730a3',
+                            900: '#312e81'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- html2pdf.js CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <style>
+        /* Custom scrollbar and print styles */
+        ::-webkit-scrollbar {
+            width: 7px;
+            height: 7px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        @media print {
+            .no-print { display: none !important; }
+            .print-only { display: block !important; }
+            body { background: white !important; font-size: 11pt; }
+            .exam-paper { box-shadow: none !important; border: none !important; padding: 0 !important; width: 100% !important; }
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col font-sans selection:bg-indigo-500 selection:text-white">
+
+    <header class="bg-gradient-to-r from-indigo-600 via-indigo-700 to-purple-700 text-white shadow-lg sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div class="flex items-center space-x-3.5">
+                <div class="p-2.5 bg-white/10 rounded-xl backdrop-blur-md border border-white/20 shadow-inner flex items-center justify-center">
+                    <i data-lucide="graduation-cap" class="w-7 h-7 text-white"></i>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <h1 class="text-xl sm:text-2xl font-display font-extrabold tracking-tight">RuruAlbernEdu</h1>
+                        <span class="bg-indigo-400/30 text-indigo-100 text-[10px] font-semibold px-2 py-0.5 rounded-full border border-indigo-300/30">Kurikulum Merdeka / Kurikulum Nasional</span>
+                    </div>
+                    <p class="text-xs text-indigo-100/85">Generator Soal, Kunci Pembahasan & Kisi-Kisi Berbasis Taksonomi Bloom (C1 - C6)</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-2 self-start md:self-auto">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-white/10 text-xs text-indigo-100 border border-white/15 backdrop-blur-sm">
+                    <i data-lucide="sparkles" class="w-3.5 h-3.5 text-amber-300"></i>
+                    Mesin Pedagogi Pintar
+                </span>
+                <button onclick="resetFormToDefault()" class="text-xs text-indigo-200 hover:text-white px-2.5 py-1 rounded-md hover:bg-white/10 transition-colors flex items-center gap-1" title="Reset Formulir">
+                    <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+                    Reset
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        
+        <!-- ==================== LEFT COLUMN: INPUT FORM PANEL ==================== -->
+        <section class="lg:col-span-5 w-full bg-white rounded-2xl shadow-sm border border-slate-200/80 p-5 sm:p-6 transition-all duration-200 hover:shadow-md">
+            <div class="flex items-center justify-between pb-4 mb-5 border-b border-slate-100">
+                <div class="flex items-center gap-2.5">
+                    <span class="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold text-sm">
+                        <i data-lucide="sliders-horizontal" class="w-4 h-4"></i>
+                    </span>
+                    <div>
+                        <h2 class="font-display font-bold text-slate-900 text-base">Parameter Asesmen</h2>
+                        <p class="text-xs text-slate-500">Sesuaikan profil kelas dan distribusi kognitif</p>
+                    </div>
+                </div>
+                <span class="text-[11px] font-medium text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-100 flex items-center gap-1">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                    Siap Generate
+                </span>
+            </div>
+
+            <!-- Form Body -->
+            <form id="quizForm" onsubmit="event.preventDefault();" class="space-y-4 text-sm">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                    <div>
+                        <label for="schoolName" class="block font-semibold text-slate-700 text-xs mb-1.5 flex items-center gap-1.5">
+                            <i data-lucide="building-2" class="w-3.5 h-3.5 text-slate-400"></i>
+                            Nama Sekolah
+                        </label>
+                        <input type="text" id="schoolName" value="SD Negeri Merdeka Belajar" 
+                               class="w-full px-3 py-2 rounded-xl border border-slate-200 text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600 transition text-sm">
+                    </div>
+                    <div>
+                        <label for="teacherName" class="block font-semibold text-slate-700 text-xs mb-1.5 flex items-center gap-1.5">
+                            <i data-lucide="user" class="w-3.5 h-3.5 text-slate-400"></i>
+                            Nama Guru Pengajar
+                        </label>
+                        <input type="text" id="teacherName" value="Budi Santoso, S.Pd." 
+                               class="w-full px-3 py-2 rounded-xl border border-slate-200 text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600 transition text-sm">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <div>
+                        <label for="educationLevel" class="block font-semibold text-slate-700 text-xs mb-1.5">
+                            Jenjang
+                        </label>
+                        <select id="educationLevel" onchange="updateClassesAndFase()" 
+                                class="w-full px-3 py-2 rounded-xl border border-slate-200 bg-white text-slate-800 font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600 transition text-sm cursor-pointer">
+                            <option value="TK">TK</option>
+                            <option value="SD/MI" selected>SD/MI</option>
+                            <option value="SMP/MTs">SMP/MTs</option>
+                            <option value="SMA/MA">SMA/MA</option>
+                            <option value="SMK">SMK</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="classSelect" class="block font-semibold text-slate-700 text-xs mb-1.5">
+                            Kelas
+                        </label>
+                        <select id="classSelect" onchange="updateFaseOnly()" 
+                                class="w-full px-3 py-2 rounded-xl border border-slate-200 bg-white text-slate-800 font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600 transition text-sm cursor-pointer">
+                            <!-- Populated dynamically via JS -->
+                        </select>
+                    </div>
+                    <div>
+                        <label for="faseBadge" class="block font-semibold text-slate-700 text-xs mb-1.5">
+                            Fase (Auto)
+                        </label>
+                        <div class="relative">
+                            <input type="text" id="faseBadge" value="Fase B" readonly 
+                                   class="w-full px-3 py-2 rounded-xl border border-indigo-100 bg-indigo-50/70 text-indigo-700 font-bold text-sm select-none cursor-not-allowed">
+                            <span class="absolute right-2.5 top-2 text-indigo-400 text-xs font-semibold">Kurmer</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                    <div>
+                        <label for="subjectInput" class="block font-semibold text-slate-700 text-xs mb-1.5 flex items-center gap-1.5">
+                            <i data-lucide="book-open" class="w-3.5 h-3.5 text-slate-400"></i>
+                            Mata Pelajaran
+                        </label>
+                        <input type="text" id="subjectInput" value="IPAS (Ilmu Pengetahuan Alam dan Sosial)" 
+                               list="subjectSuggestions"
+                               class="w-full px-3 py-2 rounded-xl border border-slate-200 text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600 transition text-sm">
+                        <datalist id="subjectSuggestions">
+                            <option value="Pendidikan Pancasila"></option>
+                            <option value="Bahasa Indonesia"></option>
+                            <option value="Matematika"></option>
+                            <option value="IPAS (Ilmu Pengetahuan Alam dan Sosial)"></option>
+                            <option value="Bahasa Inggris"></option>
+                            <option value="Seni Budaya"></option>
+                            <option value="PJOK"></option>
+                            <option value="Informatika"></option>
+                            <option value="Fisika"></option>
+                            <option value="Biologi"></option>
+                            <option value="Kimia"></option>
+                            <option value="Ekonomi"></option>
+                            <option value="Sosiologi"></option>
+                            <option value="Geografi"></option>
+                        </datalist>
+                    </div>
+                    <div>
+                        <label for="topicInput" class="block font-semibold text-slate-700 text-xs mb-1.5 flex items-center gap-1.5">
+                            <i data-lucide="lightbulb" class="w-3.5 h-3.5 text-slate-400"></i>
+                            Topik / Materi Spesifik
+                        </label>
+                        <input type="text" id="topicInput" value="Wujud Benda dan Perubahannya" 
+                               placeholder="Contoh: Fotosintesis, Teks Eksplanasi..."
+                               class="w-full px-3 py-2 rounded-xl border border-slate-200 text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600 transition text-sm">
+                    </div>
+                </div>
+
+                <!-- Tipe Soal (Multi-Checkbox Kombinasi) & Jumlah Soal -->
+                <div class="space-y-3">
+                    <div>
+                        <div class="flex items-center justify-between mb-1.5">
+                            <label class="block font-semibold text-slate-700 text-xs flex items-center gap-1.5">
+                                <i data-lucide="list-checks" class="w-3.5 h-3.5 text-slate-400"></i>
+                                Tipe Soal (Pilih Satu atau Kombinasi)
+                            </label>
+                            <span id="selectedTypesBadge" class="text-[11px] font-semibold text-indigo-700 bg-indigo-50 border border-indigo-100 px-2 py-0.5 rounded-md">
+                                1 Tipe Dipilih
+                            </span>
+                        </div>
+                        <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 p-2.5 bg-slate-50/80 rounded-xl border border-slate-200">
+                            <label class="flex items-center gap-2 p-2 bg-white rounded-lg border border-slate-200/90 hover:border-indigo-400 cursor-pointer transition select-none text-xs">
+                                <input type="checkbox" name="qTypeCheck" value="pg" checked onchange="updateSelectedTypesBadge()" class="rounded text-indigo-600 focus:ring-indigo-500 w-4 h-4 cursor-pointer">
+                                <span class="font-medium text-slate-700">Pilihan Ganda (A-E)</span>
+                            </label>
+                            <label class="flex items-center gap-2 p-2 bg-white rounded-lg border border-slate-200/90 hover:border-indigo-400 cursor-pointer transition select-none text-xs">
+                                <input type="checkbox" name="qTypeCheck" value="pgk" onchange="updateSelectedTypesBadge()" class="rounded text-indigo-600 focus:ring-indigo-500 w-4 h-4 cursor-pointer">
+                                <span class="font-medium text-slate-700">PG Kompleks</span>
+                            </label>
+                            <label class="flex items-center gap-2 p-2 bg-white rounded-lg border border-slate-200/90 hover:border-indigo-400 cursor-pointer transition select-none text-xs">
+                                <input type="checkbox" name="qTypeCheck" value="jodoh" onchange="updateSelectedTypesBadge()" class="rounded text-indigo-600 focus:ring-indigo-500 w-4 h-4 cursor-pointer">
+                                <span class="font-medium text-slate-700">Menjodohkan</span>
+                            </label>
+                            <label class="flex items-center gap-2 p-2 bg-white rounded-lg border border-slate-200/90 hover:border-indigo-400 cursor-pointer transition select-none text-xs">
+                                <input type="checkbox" name="qTypeCheck" value="bs" onchange="updateSelectedTypesBadge()" class="rounded text-indigo-600 focus:ring-indigo-500 w-4 h-4 cursor-pointer">
+                                <span class="font-medium text-slate-700">Benar / Salah</span>
+                            </label>
+                            <label class="flex items-center gap-2 p-2 bg-white rounded-lg border border-slate-200/90 hover:border-indigo-400 cursor-pointer transition select-none text-xs">
+                                <input type="checkbox" name="qTypeCheck" value="isian" onchange="updateSelectedTypesBadge()" class="rounded text-indigo-600 focus:ring-indigo-500 w-4 h-4 cursor-pointer">
+                                <span class="font-medium text-slate-700">Uraian Singkat</span>
+                            </label>
+                            <label class="flex items-center gap-2 p-2 bg-white rounded-lg border border-slate-200/90 hover:border-indigo-400 cursor-pointer transition select-none text-xs">
+                                <input type="checkbox" name="qTypeCheck" value="esai" onchange="updateSelectedTypesBadge()" class="rounded text-indigo-600 focus:ring-indigo-500 w-4 h-4 cursor-pointer">
+                                <span class="font-medium text-slate-700">Uraian Panjang (Esai)</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block font-semibold text-slate-700 text-xs mb-1.5 flex items-center justify-between">
+                            <span class="flex items-center gap-1.5">
+                                <i data-lucide="hash" class="w-3.5 h-3.5 text-slate-400"></i>
+                                Jumlah Soal (1 - 25)
+                            </span>
+                            <span id="questionCountDisplay" class="text-xs font-bold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded">5 Butir</span>
+                        </label>
+                        <div class="flex items-center border border-slate-200 rounded-xl overflow-hidden bg-white">
+                            <button type="button" onclick="adjustCount(-1)" class="w-10 h-10 flex items-center justify-center text-slate-600 hover:bg-slate-100 active:bg-slate-200 transition">
+                                <i data-lucide="minus" class="w-4 h-4"></i>
+                            </button>
+                            <input type="number" id="questionCount" min="1" max="25" value="5" onchange="validateCount(this)"
+                                   class="w-full text-center border-none font-semibold text-slate-800 focus:outline-none focus:ring-0 text-sm">
+                            <button type="button" onclick="adjustCount(1)" class="w-10 h-10 flex items-center justify-center text-slate-600 hover:bg-slate-100 active:bg-slate-200 transition">
+                                <i data-lucide="plus" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cognitive Profile Distribution -->
+                <div>
+                    <label for="cognitiveProfile" class="block font-semibold text-slate-700 text-xs mb-1.5 flex items-center justify-between">
+                        <span class="flex items-center gap-1.5">
+                            <i data-lucide="brain" class="w-3.5 h-3.5 text-slate-400"></i>
+                            Tingkat Kesulitan / Distribusi Kognitif
+                        </span>
+                    </label>
+                    <select id="cognitiveProfile" onchange="renderCognitiveBadgePreview()"
+                            class="w-full px-3 py-2 rounded-xl border border-slate-200 bg-white text-slate-800 font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600 transition text-sm cursor-pointer">
+                        <option value="dasar">Level Dasar (Dominan C1-C2) - Remedial / Latihan Awal (70% C1-C2, 20% C3, 10% C4)</option>
+                        <option value="standar" selected>Level Standar (Campuran C1-C4) - PTS / PAS / Sumatif (30% C1-C2, 50% C3, 20% C4)</option>
+                        <option value="hots">Level HOTS (Dominan C4-C6) - Pengayaan / Asesmen Kritis (20% C3, 50% C4-C5, 30% C6)</option>
+                        <option value="lengkap">Paket Lengkap (C1-C6) - Merata Seluruh Level Kognitif</option>
+                    </select>
+                    <!-- Preview Distribution Badges -->
+                    <div id="cognitivePreviewPills" class="mt-2.5 flex flex-wrap gap-1.5 text-[11px]">
+                        <!-- Populated by renderCognitiveBadgePreview() -->
+                    </div>
+                </div>
+
+                <div class="pt-3 border-t border-slate-100">
+                    <button type="button" onclick="generateAssessment()" 
+                            class="w-full bg-gradient-to-r from-indigo-600 via-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 active:from-indigo-800 text-white font-bold py-3 px-4 rounded-xl shadow-md hover:shadow-lg shadow-indigo-500/20 transition-all duration-200 flex items-center justify-center gap-2.5 text-sm sm:text-base">
+                        <i data-lucide="sparkles" class="w-4 h-4 text-amber-300 animate-pulse"></i>
+                        <span>Buat Soal Sekarang</span>
+                    </button>
+                </div>
+            </form>
+        </section>
+
+        <!-- ==================== RIGHT COLUMN: OUTPUT WORKSPACE ==================== -->
+        <section class="lg:col-span-7 w-full space-y-4">
+            
+            <!-- Output Header Controls & Export Bar -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+                <div class="flex items-center gap-2 w-full sm:w-auto">
+                    <span class="p-2 rounded-lg bg-indigo-50 text-indigo-600">
+                        <i data-lucide="file-check-2" class="w-5 h-5"></i>
+                    </span>
+                    <div>
+                        <h3 class="font-display font-bold text-slate-900 text-sm">Lembar Asesmen Terbentuk</h3>
+                        <p class="text-xs text-slate-500" id="outputSubtitle">Siap untuk diujikan atau diarsipkan</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-2 w-full sm:w-auto justify-end">
+                    <button onclick="exportToWord()" 
+                            class="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-200/70 hover:bg-blue-100 active:bg-blue-200 transition shadow-xs">
+                        <i data-lucide="file-text" class="w-4 h-4 text-blue-600"></i>
+                        <span>Download Word (.doc)</span>
+                    </button>
+                    <button onclick="exportToPDF()" 
+                            class="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold bg-rose-50 text-rose-700 border border-rose-200/70 hover:bg-rose-100 active:bg-rose-200 transition shadow-xs">
+                        <i data-lucide="file-down" class="w-4 h-4 text-rose-600"></i>
+                        <span>Download PDF</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tab Navigation Bar -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-1.5 flex flex-wrap gap-1">
+                <button onclick="switchTab('naskah')" id="tabBtn-naskah" 
+                        class="tab-btn flex-1 min-w-[120px] py-2 px-3 rounded-xl font-semibold text-xs flex items-center justify-center gap-2 transition bg-indigo-600 text-white shadow-sm">
+                    <i data-lucide="pencil-line" class="w-3.5 h-3.5"></i>
+                    <span>Naskah Soal</span>
+                </button>
+                <button onclick="switchTab('kunci')" id="tabBtn-kunci" 
+                        class="tab-btn flex-1 min-w-[120px] py-2 px-3 rounded-xl font-semibold text-xs flex items-center justify-center gap-2 transition text-slate-600 hover:text-slate-900 hover:bg-slate-100">
+                    <i data-lucide="check-circle" class="w-3.5 h-3.5"></i>
+                    <span>Kunci & Pembahasan</span>
+                </button>
+                <button onclick="switchTab('kisi')" id="tabBtn-kisi" 
+                        class="tab-btn flex-1 min-w-[120px] py-2 px-3 rounded-xl font-semibold text-xs flex items-center justify-center gap-2 transition text-slate-600 hover:text-slate-900 hover:bg-slate-100">
+                    <i data-lucide="table" class="w-3.5 h-3.5"></i>
+                    <span>Kisi-Kisi Soal (7 Kolom)</span>
+                </button>
+            </div>
+
+            <div id="exportableArea" class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6 sm:p-8 min-h-[550px] exam-paper">
+                
+                <!-- Kop Surat Lembar Ujian (Otomatis menyesuaikan institusi) -->
+                <div id="examHeaderCard" class="pb-5 mb-6 border-b-2 border-slate-900">
+                    <div class="flex items-center justify-between text-center border-b pb-3 mb-3 border-slate-300">
+                        <div class="w-12 h-12 flex-shrink-0 hidden sm:flex items-center justify-center bg-slate-100 rounded-lg text-slate-700">
+                            <i data-lucide="school" class="w-7 h-7"></i>
+                        </div>
+                        <div class="flex-1 px-2">
+                            <h2 class="text-base sm:text-lg font-bold uppercase tracking-wider text-slate-900" id="kopSchool">SD NEGERI MERDEKA BELAJAR</h2>
+                            <p class="text-xs text-slate-600 font-medium">ASESMEN SUMATIF / FORMATIF KURIKULUM MERDEKA / KURIKULUM NASIONAL</p>
+                            <p class="text-[11px] text-slate-500 italic">Tahun Ajaran 2026/2027</p>
+                        </div>
+                        <div class="w-12 h-12 flex-shrink-0 hidden sm:flex items-center justify-center bg-indigo-50 rounded-lg text-indigo-700 font-extrabold text-sm border border-indigo-200">
+                            KURIKULUM
+                        </div>
+                    </div>
+
+                    <!-- Meta Information Box -->
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs bg-slate-50 p-3 rounded-xl border border-slate-200">
+                        <div><span class="text-slate-500">Mata Pelajaran:</span> <span class="font-bold text-slate-800 block" id="kopSubject">IPAS</span></div>
+                        <div><span class="text-slate-500">Kelas / Fase:</span> <span class="font-bold text-slate-800 block" id="kopClassFase">Kelas 4 (Fase B)</span></div>
+                        <div><span class="text-slate-500">Guru Pengajar:</span> <span class="font-bold text-slate-800 block" id="kopTeacher">Budi Santoso, S.Pd.</span></div>
+                        <div><span class="text-slate-500">Bentuk Soal:</span> <span class="font-bold text-slate-800 block" id="kopType">Pilihan Ganda</span></div>
+                    </div>
+                </div>
+
+                <div id="tabContent-naskah" class="tab-pane animate-fade-in space-y-6">
+                    <div class="flex items-center justify-between text-xs text-slate-500 bg-amber-50/70 border border-amber-200/60 p-2.5 rounded-lg">
+                        <span class="flex items-center gap-1.5 text-amber-800 font-medium">
+                            <i data-lucide="info" class="w-4 h-4 text-amber-600 flex-shrink-0"></i>
+                            Petunjuk: Pilihlah atau kerjakanlah soal di bawah ini dengan cermat dan tepat!
+                        </span>
+                        <span class="font-semibold text-amber-900" id="badgeTotalItems">5 Butir Soal</span>
+                    </div>
+
+                    <!-- Question list container -->
+                    <div id="questionsContainer" class="space-y-6">
+                        <!-- Questions injected here dynamically -->
+                    </div>
+                </div>
+
+                <div id="tabContent-kunci" class="tab-pane hidden space-y-5">
+                    <div class="bg-indigo-50 border border-indigo-100 p-3 rounded-xl flex items-center justify-between text-xs">
+                        <div class="flex items-center gap-2 text-indigo-900 font-semibold">
+                            <i data-lucide="key-round" class="w-4 h-4 text-indigo-600"></i>
+                            <span>Pedoman Penilaian & Pembahasan Konseptual</span>
+                        </div>
+                        <span class="text-indigo-700 font-medium">Kunci Valid</span>
+                    </div>
+
+                    <div id="answersContainer" class="space-y-4">
+                        <!-- Answer keys injected here dynamically -->
+                    </div>
+                </div>
+
+                <div id="tabContent-kisi" class="tab-pane hidden space-y-4">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2 border-b border-slate-200">
+                        <div>
+                            <h4 class="font-bold text-slate-800 text-sm">Matriks Kisi-Kisi Penulisan Soal</h4>
+                            <p class="text-xs text-slate-500">Standar Badan Penjaminan Mutu Pendidikan (BPMP) & Kurikulum Merdeka</p>
+                        </div>
+                        <span class="text-[11px] font-semibold text-slate-600 bg-slate-100 px-2.5 py-1 rounded-md self-start sm:self-auto">
+                            Format Baku 7 Kolom
+                        </span>
+                    </div>
+
+                    <div class="overflow-x-auto rounded-xl border border-slate-200">
+                        <table class="w-full text-left text-xs border-collapse">
+                            <thead>
+                                <tr class="bg-slate-100 text-slate-700 font-bold border-b border-slate-200">
+                                    <th class="p-2.5 w-10 text-center border-r border-slate-200">No</th>
+                                    <th class="p-2.5 w-44 border-r border-slate-200">Capaian Pembelajaran (CP)</th>
+                                    <th class="p-2.5 w-44 border-r border-slate-200">Tujuan Pembelajaran (TP)</th>
+                                    <th class="p-2.5 w-36 border-r border-slate-200">Materi Pokok</th>
+                                    <th class="p-2.5 border-r border-slate-200">Indikator Soal</th>
+                                    <th class="p-2.5 w-24 text-center border-r border-slate-200">Level Kognitif</th>
+                                    <th class="p-2.5 w-24 text-center">Bentuk Soal</th>
+                                </tr>
+                            </thead>
+                            <tbody id="kisiKisiTableBody" class="divide-y divide-slate-200 text-slate-700">
+                                <!-- Table rows injected dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <div id="toastNotification" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 pointer-events-none transition-all duration-300 ease-out flex items-center gap-3 bg-slate-900 text-white px-4 py-3 rounded-xl shadow-xl border border-slate-700 text-xs sm:text-sm">
+        <span class="p-1 rounded-full bg-emerald-500/20 text-emerald-400">
+            <i data-lucide="check" class="w-4 h-4"></i>
+        </span>
+        <span id="toastMessage">Tindakan berhasil dilakukan!</span>
+    </div>
+
+    <script>
+        /* ==================== GLOBAL APP STATE ==================== */
+        const APP_DATA = {
+            levels: {
+                "TK": ["Kelas TK A", "Kelas TK B"],
+                "SD/MI": ["Kelas 1", "Kelas 2", "Kelas 3", "Kelas 4", "Kelas 5", "Kelas 6"],
+                "SMP/MTs": ["Kelas 7", "Kelas 8", "Kelas 9"],
+                "SMA/MA": ["Kelas 10", "Kelas 11", "Kelas 12"],
+                "SMK": ["Kelas 10", "Kelas 11", "Kelas 12"]
+            },
+            faseRules: {
+                "TK": () => "Fase Fondasi",
+                "SD/MI": (cls) => {
+                    if (cls.includes("1") || cls.includes("2")) return "Fase A";
+                    if (cls.includes("3") || cls.includes("4")) return "Fase B";
+                    return "Fase C";
+                },
+                "SMP/MTs": () => "Fase D",
+                "SMA/MA": (cls) => cls.includes("10") ? "Fase E" : "Fase F",
+                "SMK": (cls) => cls.includes("10") ? "Fase E" : "Fase F"
+            },
+            currentGeneratedItems: []
+        };
+
+        const BLOOM_TAGS = {
+            "C1": { name: "Mengingat", color: "bg-emerald-50 text-emerald-700 border-emerald-200" },
+            "C2": { name: "Memahami", color: "bg-teal-50 text-teal-700 border-teal-200" },
+            "C3": { name: "Menerapkan", color: "bg-sky-50 text-sky-700 border-sky-200" },
+            "C4": { name: "Menganalisis", color: "bg-amber-50 text-amber-700 border-amber-200" },
+            "C5": { name: "Mengevaluasi", color: "bg-orange-50 text-orange-700 border-orange-200" },
+            "C6": { name: "Mencipta", color: "bg-rose-50 text-rose-700 border-rose-200" }
+        };
+
+        const QUESTION_TYPES = {
+            "pg": "Pilihan Ganda",
+            "pgk": "PG Kompleks",
+            "jodoh": "Menjodohkan",
+            "bs": "Benar / Salah",
+            "isian": "Uraian Singkat",
+            "esai": "Uraian Panjang (Esai)"
+        };
+
+        function getSelectedQuestionTypes() {
+            const checked = Array.from(document.querySelectorAll('input[name="qTypeCheck"]:checked')).map(cb => cb.value);
+            if (checked.length === 0) {
+                // Default fallback ke Pilihan Ganda jika user mengosongkan semua centang
+                const defaultCheckbox = document.querySelector('input[name="qTypeCheck"][value="pg"]');
+                if (defaultCheckbox) defaultCheckbox.checked = true;
+                updateSelectedTypesBadge();
+                return ['pg'];
+            }
+            return checked;
+        }
+
+        function updateSelectedTypesBadge() {
+            const checked = Array.from(document.querySelectorAll('input[name="qTypeCheck"]:checked'));
+            const badge = document.getElementById('selectedTypesBadge');
+            if (checked.length === 0) {
+                badge.textContent = "Pilih minimal 1 tipe";
+                badge.className = "text-[11px] font-semibold text-rose-700 bg-rose-50 border border-rose-100 px-2 py-0.5 rounded-md";
+            } else if (checked.length === 1) {
+                badge.textContent = `${QUESTION_TYPES[checked[0].value] || '1 Tipe'}`;
+                badge.className = "text-[11px] font-semibold text-indigo-700 bg-indigo-50 border border-indigo-100 px-2 py-0.5 rounded-md";
+            } else {
+                badge.textContent = `Kombinasi (${checked.length} Tipe)`;
+                badge.className = "text-[11px] font-semibold text-purple-700 bg-purple-50 border border-purple-100 px-2 py-0.5 rounded-md";
+            }
+        }
+
+        function updateClassesAndFase() {
+            const level = document.getElementById('educationLevel').value;
+            const classSelect = document.getElementById('classSelect');
+            const classes = APP_DATA.levels[level] || [];
+
+            classSelect.innerHTML = '';
+            classes.forEach((cls, idx) => {
+                const opt = document.createElement('option');
+                opt.value = cls;
+                opt.textContent = cls;
+                // Default selection for pleasant UX
+                if (level === "SD/MI" && cls.includes("4")) opt.selected = true;
+                if (level === "SMP/MTs" && cls.includes("7")) opt.selected = true;
+                if ((level === "SMA/MA" || level === "SMK") && cls.includes("10")) opt.selected = true;
+                classSelect.appendChild(opt);
+            });
+
+            updateFaseOnly();
+        }
+
+        function updateFaseOnly() {
+            const level = document.getElementById('educationLevel').value;
+            const selectedClass = document.getElementById('classSelect').value || "";
+            const resolver = APP_DATA.faseRules[level];
+            const fase = resolver ? resolver(selectedClass) : "Fase Fondasi";
+            document.getElementById('faseBadge').value = fase;
+        }
+
+        function adjustCount(delta) {
+            const input = document.getElementById('questionCount');
+            let current = parseInt(input.value, 10) || 5;
+            current = Math.min(25, Math.max(1, current + delta));
+            input.value = current;
+            document.getElementById('questionCountDisplay').textContent = `${current} Butir`;
+            renderCognitiveBadgePreview();
+        }
+
+        function validateCount(input) {
+            let val = parseInt(input.value, 10);
+            if (isNaN(val) || val < 1) val = 1;
+            if (val > 25) val = 25;
+            input.value = val;
+            document.getElementById('questionCountDisplay').textContent = `${val} Butir`;
+            renderCognitiveBadgePreview();
+        }
+
+        function renderCognitiveBadgePreview() {
+            const profile = document.getElementById('cognitiveProfile').value;
+            const count = parseInt(document.getElementById('questionCount').value, 10) || 5;
+            const container = document.getElementById('cognitivePreviewPills');
+            
+            const dist = getCognitiveDistribution(profile, count);
+            container.innerHTML = Object.entries(dist)
+                .filter(([_, qty]) => qty > 0)
+                .map(([lvl, qty]) => {
+                    const tag = BLOOM_TAGS[lvl] || { color: 'bg-slate-100 text-slate-700 border-slate-200' };
+                    return `<span class="px-2 py-0.5 rounded-md font-semibold border ${tag.color}">
+                        ${lvl} (${tag.name}): ${qty} butir
+                    </span>`;
+                }).join('');
+        }
+
+        /* Distribution calculation algorithm */
+        function getCognitiveDistribution(profile, total) {
+            const result = { C1: 0, C2: 0, C3: 0, C4: 0, C5: 0, C6: 0 };
+            
+            if (profile === 'dasar') {
+                // 70% C1-C2, 20% C3, 10% C4
+                result.C1 = Math.max(1, Math.round(total * 0.35));
+                result.C2 = Math.max(1, Math.round(total * 0.35));
+                result.C3 = Math.round(total * 0.20);
+                result.C4 = total - (result.C1 + result.C2 + result.C3);
+                if (result.C4 < 0) { result.C2 += result.C4; result.C4 = 0; }
+            } else if (profile === 'standar') {
+                // 30% C1-C2, 50% C3, 20% C4
+                result.C1 = Math.max(1, Math.round(total * 0.15));
+                result.C2 = Math.max(1, Math.round(total * 0.15));
+                result.C3 = Math.max(1, Math.round(total * 0.50));
+                result.C4 = total - (result.C1 + result.C2 + result.C3);
+                if (result.C4 < 0) { result.C3 += result.C4; result.C4 = 0; }
+            } else if (profile === 'hots') {
+                // 20% C3, 50% C4-C5, 30% C6
+                result.C3 = Math.max(1, Math.round(total * 0.20));
+                result.C4 = Math.max(1, Math.round(total * 0.25));
+                result.C5 = Math.max(1, Math.round(total * 0.25));
+                result.C6 = total - (result.C3 + result.C4 + result.C5);
+                if (result.C6 < 0) { result.C5 += result.C6; result.C6 = 0; }
+            } else {
+                // Paket Lengkap C1-C6 merata
+                const levels = ['C1', 'C2', 'C3', 'C4', 'C5', 'C6'];
+                let remaining = total;
+                let i = 0;
+                while (remaining > 0) {
+                    result[levels[i % 6]]++;
+                    remaining--;
+                    i++;
+                }
+            }
+
+            // Normalization fallback
+            let sum = Object.values(result).reduce((a, b) => a + b, 0);
+            while (sum < total) { result.C3++; sum++; }
+            while (sum > total) {
+                for (let k of ['C6', 'C5', 'C4', 'C3', 'C2', 'C1']) {
+                    if (result[k] > 0 && sum > total) {
+                        result[k]--;
+                        sum--;
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toastNotification');
+            const toastMsg = document.getElementById('toastMessage');
+            toastMsg.textContent = message;
+            toast.classList.remove('translate-y-20', 'opacity-0', 'pointer-events-none');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0', 'pointer-events-none');
+                toast.classList.remove('translate-y-0', 'opacity-100');
+            }, 3200);
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-pane').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.className = "tab-btn flex-1 min-w-[120px] py-2 px-3 rounded-xl font-semibold text-xs flex items-center justify-center gap-2 transition text-slate-600 hover:text-slate-900 hover:bg-slate-100";
+            });
+
+            const activeContent = document.getElementById(`tabContent-${tabId}`);
+            const activeBtn = document.getElementById(`tabBtn-${tabId}`);
+            
+            if (activeContent) activeContent.classList.remove('hidden');
+            if (activeBtn) {
+                activeBtn.className = "tab-btn flex-1 min-w-[120px] py-2 px-3 rounded-xl font-semibold text-xs flex items-center justify-center gap-2 transition bg-indigo-600 text-white shadow-sm";
+            }
+            if (window.lucide) lucide.createIcons();
+        }
+
+        function generateAssessment() {
+            const school = document.getElementById('schoolName').value.trim() || "Satuan Pendidikan";
+            const teacher = document.getElementById('teacherName').value.trim() || "Guru Pengajar";
+            const level = document.getElementById('educationLevel').value;
+            const cls = document.getElementById('classSelect').value;
+            const fase = document.getElementById('faseBadge').value;
+            const subject = document.getElementById('subjectInput').value.trim() || "Mata Pelajaran";
+            const topic = document.getElementById('topicInput').value.trim() || "Materi Pokok";
+            const selectedTypes = getSelectedQuestionTypes();
+            const total = parseInt(document.getElementById('questionCount').value, 10) || 5;
+            const profile = document.getElementById('cognitiveProfile').value;
+
+            // Tentukan label bentuk soal di Kop Surat
+            const typeSummary = selectedTypes.length === 1 
+                ? (QUESTION_TYPES[selectedTypes[0]] || "Pilihan Ganda") 
+                : `Kombinasi (${selectedTypes.map(t => QUESTION_TYPES[t]).join(', ')})`;
+
+            // Sync Kop Surat text
+            document.getElementById('kopSchool').textContent = school.toUpperCase();
+            document.getElementById('kopTeacher').textContent = teacher;
+            document.getElementById('kopSubject').textContent = subject;
+            document.getElementById('kopClassFase').textContent = `${cls} (${fase})`;
+            document.getElementById('kopType').textContent = typeSummary;
+            document.getElementById('badgeTotalItems').textContent = `${total} Butir Soal`;
+            document.getElementById('outputSubtitle').textContent = `${subject} • ${topic} • ${fase}`;
+
+            // Build item sequence based on cognitive distribution
+            const distribution = getCognitiveDistribution(profile, total);
+            const levelSequence = [];
+            for (let [lvl, qty] of Object.entries(distribution)) {
+                for (let i = 0; i < qty; i++) {
+                    levelSequence.push(lvl);
+                }
+            }
+
+            // Shuffle sequence gently or keep structured order
+            levelSequence.sort((a, b) => a.localeCompare(b));
+
+            // Distribusikan tipe soal terpilih secara merata ke setiap butir
+            const itemTypeSequence = [];
+            for (let i = 0; i < total; i++) {
+                itemTypeSequence.push(selectedTypes[i % selectedTypes.length]);
+            }
+
+            // Generate items
+            const generatedItems = levelSequence.map((lvl, index) => {
+                const currentItemType = itemTypeSequence[index];
+                return buildSmartQuestionItem(index + 1, lvl, currentItemType, subject, topic, cls, fase);
+            });
+
+            APP_DATA.currentGeneratedItems = generatedItems;
+
+            // Render components
+            renderNaskahSoal(generatedItems);
+            renderKunciPembahasan(generatedItems);
+            renderKisiKisiTable(generatedItems, subject, topic, fase);
+
+            // Re-bind Lucide icons
+            if (window.lucide) lucide.createIcons();
+            showToast("Soal, Kunci Pembahasan, dan Kisi-Kisi berhasil dibuat!");
+        }
+
+        function buildSmartQuestionItem(number, bloomLevel, type, subject, topic, cls, fase) {
+            const verbMap = {
+                "C1": "mengidentifikasi atau mengingat definisi dari",
+                "C2": "menjelaskan mekanisme serta hubungan mendasar pada",
+                "C3": "menerapkan konsep faktual dalam pemecahan masalah kehidupan nyata terkait",
+                "C4": "menganalisis perbedaan data, fenomena, atau relasi sebab-akibat mengenai",
+                "C5": "mengevaluasi dan menguji kebenaran suatu pernyataan/argumen mengenai",
+                "C6": "merumuskan solusi inovatif atau gagasan terpadu untuk mengoptimalkan"
+            };
+
+            const promptVerb = verbMap[bloomLevel] || "memahami";
+            const typeLabel = QUESTION_TYPES[type] || "Pilihan Ganda";
+
+            // Common Learning Objectives
+            const cp = `Peserta didik mampu ${promptVerb} materi ${topic} sesuai dengan karakteristik dan capaian pada ${fase}.`;
+            const tp = `Melalui eksplorasi stimulus kasus, peserta didik mampu menyelesaikan permasalahan ${topic} pada level kognitif ${bloomLevel} secara kritis.`;
+            const indikator = `Disajikan narasi kontekstual mengenai ${topic}, peserta didik dapat ${promptVerb} dengan tepat dan terukur.`;
+
+            let itemData = {
+                number: number,
+                bloom: bloomLevel,
+                type: type,
+                typeLabel: typeLabel,
+                cp: cp,
+                tp: tp,
+                materi: topic,
+                indikator: indikator,
+                stimulus: "",
+                questionText: "",
+                options: [],
+                correctAnswer: "",
+                explanation: ""
+            };
+
+            // Distinct generators per Question Type
+            if (type === 'pg') {
+                const generated = generateMultipleChoice(number, bloomLevel, topic, subject);
+                Object.assign(itemData, generated);
+            } else if (type === 'pgk') {
+                const generated = generateComplexMultipleChoice(number, bloomLevel, topic);
+                Object.assign(itemData, generated);
+            } else if (type === 'jodoh') {
+                const generated = generateMatching(number, bloomLevel, topic);
+                Object.assign(itemData, generated);
+            } else if (type === 'bs') {
+                const generated = generateTrueFalse(number, bloomLevel, topic);
+                Object.assign(itemData, generated);
+            } else if (type === 'isian') {
+                const generated = generateShortAnswer(number, bloomLevel, topic);
+                Object.assign(itemData, generated);
+            } else {
+                // Esai / Uraian Panjang
+                const generated = generateEssay(number, bloomLevel, topic);
+                Object.assign(itemData, generated);
+            }
+
+            return itemData;
+        }
+
+        function generateMultipleChoice(no, bloom, topic, subject) {
+            const contextScenarios = [
+                `Dalam kegiatan eksperimen sederhana di kelas mengenai "${topic}", seorang siswa mengamati perubahan gejala yang terjadi secara berkala selama 15 menit.`,
+                `Pada kehidupan sehari-hari, penerapan prinsip "${topic}" kerap dijumpai ketika masyarakat berinteraksi dengan lingkungan sekitarnya.`,
+                `Berdasarkan data studi kasus mengenai fenomena "${topic}", dicatat adanya variasi kondisi saat variabel kontrol diubah secara bertahap.`
+            ];
+            const stimulus = contextScenarios[(no - 1) % contextScenarios.length];
+            
+            let questionText = "";
+            let options = [];
+            let answer = "";
+            let explanation = "";
+
+            if (bloom === "C1" || bloom === "C2") {
+                questionText = `Berdasarkan stimulus di atas, manakah pernyataan yang paling tepat mendefinisikan karakteristik utama dari materi ${topic}?`;
+                options = [
+                    `A. Terjadi perubahan wujud atau bentuk yang sifatnya spontan dan tidak memerlukan transfer energi lingkungan`,
+                    `B. Memiliki pola interaksi teratur yang sesuai dengan kaidah fundamental pada materi ${topic}`,
+                    `C. Mengeliminasi seluruh pengaruh suhu, tekanan, dan volume ruangan secara permanen`,
+                    `D. Hanya dapat berlangsung apabila dibantu oleh katalis buatan di laboratorium modern`,
+                    `E. Bersifat acak mutlak dan tidak dapat diprediksi melalui observasi ilmiah maupun perhitungan teoritis`
+                ];
+                answer = "B. Memiliki pola interaksi teratur yang sesuai dengan kaidah fundamental pada materi " + topic;
+                explanation = `Pembahasan (${bloom}): Konsep dasar ${topic} menggarisbawahi pentingnya pola interaksi karakteristik utama yang stabil dan dapat diverifikasi berdasarkan prinsip dasar kurikulum. Opsi A, C, D, dan E tidak tepat karena fenomena ini melibatkan energi yang teratur dan dapat diobservasi secara ilmiah.`;
+            } else if (bloom === "C3" || bloom === "C4") {
+                questionText = `Jika variabel utama pada pengamatan "${topic}" dinaikkan dua kali lipat, maka konsekuensi logis yang dapat dianalisis terhadap sistem tersebut adalah...`;
+                options = [
+                    `A. Laju perubahan berlangsung lebih cepat karena energi kinetik antar komponen meningkat secara proporsional`,
+                    `B. Kestabilan sistem terhenti total tanpa menyisakan partikel atau hasil reaksi apapun`,
+                    `C. Tidak terjadi interaksi apapun karena kapasitas ambang telah terlampaui sejak menit pertama`,
+                    `D. Terjadi penurunan drastis pada seluruh indikator keseimbangan materi`,
+                    `E. Karakteristik materi mengalami fluktuasi tak teratur tanpa mematuhi relasi kuantitatif yang jelas`
+                ];
+                answer = "A. Laju perubahan berlangsung lebih cepat karena energi kinetik antar komponen meningkat secara proporsional";
+                explanation = `Pembahasan (${bloom}): Penerapan dan analisis kognitif menunjukkan bahwa peningkatan intensitas variabel utama pada ${topic} berbanding lurus dengan laju transformasi sistem secara sistematis. Opsi B, C, D, dan E merupakan distraktor yang tidak logis secara sains.`;
+            } else {
+                questionText = `Bagaimanakah rumusan evaluasi dan strategi alternatif terbaik untuk mengatasi anomali yang timbul saat mempraktikkan konsep "${topic}"?`;
+                options = [
+                    `A. Mengabaikan data anomali dan mengulang pengamatan tanpa mencatat instrumen pengukuran`,
+                    `B. Mengintegrasikan variabel kontrol baru serta merumuskan hipotesis sintesis yang adaptif terhadap karakteristik ${topic}`,
+                    `C. Menurunkan standar evaluasi hingga hasil pengamatan terlihat seragam dengan buku panduan`,
+                    `D. Membatasi ruang lingkup hanya pada contoh hipotesis teoretis tanpa pengujian lapangan`,
+                    `E. Menghentikan investigasi secara permanen dan mengasumsikan teori dasar materi tersebut tidak dapat diuji`
+                ];
+                answer = "B. Mengintegrasikan variabel kontrol baru serta merumuskan hipotesis sintesis yang adaptif terhadap karakteristik " + topic;
+                explanation = `Pembahasan (${bloom} - HOTS): Level evaluasi & kreasi menuntut peserta didik untuk berpikir reflektif, memitigasi anomali secara ilmiah, serta merancang perbaikan terstruktur berdasarkan prinsip keilmuan. Opsi B merupakan pendekatan problem solving ilmiah yang tepat.`;
+            }
+
+            return { stimulus, questionText, options, correctAnswer: answer, explanation };
+        }
+
+        function generateComplexMultipleChoice(no, bloom, topic) {
+            const stimulus = `Perhatikan stimulus infografis dan teks laporan hasil observasi tentang "${topic}" berikut!`;
+            const questionText = `Berdasarkan fakta dan prinsip ilmiah pada topik "${topic}", berilah tanda centang (✓) pada DUA atau LEBIH pernyataan yang BENAR di bawah ini!`;
+            const options = [
+                `[ ] (1) Karakteristik utama dari ${topic} dipengaruhi oleh faktor internal dan lingkungan sekitar.`,
+                `[ ] (2) Konsep ${topic} hanya relevan untuk simulasi laboratorium dan tidak terjadi di alam bebas.`,
+                `[ ] (3) Terdapat keteraturan hukum alam yang menghubungkan sebab dan akibat pada fenomena ${topic}.`,
+                `[ ] (4) Setiap perubahan pada materi ${topic} senantiasa mematuhi asas konservasi energi.`
+            ];
+            const answer = "Pernyataan (1), (3), dan (4) bernilai BENAR.";
+            const explanation = `Pembahasan (${bloom}): Pernyataan (1), (3), dan (4) konsisten dengan prinsip konseptual ${topic}. Sedangkan pernyataan (2) salah karena prinsip ini berlaku universal dalam kehidupan sehari-hari siswa.`;
+            return { stimulus, questionText, options, correctAnswer: answer, explanation };
+        }
+
+        function generateMatching(no, bloom, topic) {
+            const stimulus = `Berikut adalah tabel pasangan konsep dan contoh kontekstual mengenai "${topic}".`;
+            const questionText = `Pasangkanlah setiap Premis (Kolom Kiri) dengan Pilihan Respons yang Tepat (Kolom Kanan) berdasarkan materi ${topic}!`;
+            const options = [
+                `• Kolom A (Konsep 1: Sifat Dasar ${topic})   --->   Pilihan: [ X ] Terjadi pelepasan kalor lingkungan`,
+                `• Kolom A (Konsep 2: Indikator Pengamatan)     --->   Pilihan: [ Y ] Parameter terukur secara kuantitatif`,
+                `• Kolom A (Konsep 3: Aplikasi Nyata)          --->   Pilihan: [ Z ] Pemanfaatan dalam teknologi ramah lingkungan`
+            ];
+            const answer = "Pasangan Tepat: 1 -> Y, 2 -> X, 3 -> Z";
+            const explanation = `Pembahasan (${bloom}): Penjodohan ini menguji ketelitian kognitif peserta didik dalam mengaitkan terminologi teoritis materi ${topic} dengan representasi empirisnya di dunia nyata.`;
+            return { stimulus, questionText, options, correctAnswer: answer, explanation };
+        }
+
+        function generateTrueFalse(no, bloom, topic) {
+            const stimulus = `Cermatilah narasi pernyataan singkat terkait peristiwa "${topic}".`;
+            const questionText = `Tentukan status kebenaran dari pernyataan berikut: "Semua bentuk interaksi materi pada topik '${topic}' selalu menghasilkan zat baru yang tidak dapat kembali ke wujud semula (bersifat ireversibel)."`;
+            const options = [
+                `Pilihan Jawaban: [  ] BENAR    atau    [  ] SALAH`
+            ];
+            const answer = "SALAH";
+            const explanation = `Pembahasan (${bloom}): Pernyataan bernilai SALAH. Pada materi ${topic}, tidak semua interaksi bersifat ireversibel; banyak di antaranya merupakan perubahan fisika yang dapat berbalik wujud (reversibel) tergantung kondisi termodinamika.`;
+            return { stimulus, questionText, options, correctAnswer: answer, explanation };
+        }
+
+        function generateShortAnswer(no, bloom, topic) {
+            const stimulus = `Dalam sebuah percobaan sains mengenai "${topic}", peserta didik mencatat bahwa ketika suhu lingkungan diturunkan secara drastis, massa sistem tetap stabil namun volumenya mengalami penyusutan proporsional.`;
+            const questionText = `Sebutkan istilah ilmiah untuk fenomena penyusutan volume materi akibat penurunan energi termal pada materi ${topic} tersebut!`;
+            const options = [
+                `Lembar Jawaban: ............................................................................................................................`
+            ];
+            const answer = "Penyusutan Termal / Kontraksi Termal (Thermal Contraction)";
+            const explanation = `Pembahasan (${bloom}): Istilah sains yang presisi untuk peristiwa mengecilnya dimensi/volume zat saat didinginkan adalah penyusutan atau pengerutan termal. Peserta didik menunjukkan penguasaan kosakata kognitif yang akurat.`;
+            return { stimulus, questionText, options, correctAnswer: answer, explanation };
+        }
+
+        function generateEssay(no, bloom, topic) {
+            const stimulus = `Kondisi iklim dan aktivitas manusia saat ini memberikan dampak signifikan terhadap siklus materi "${topic}" di lingkungan sekitar tempat tinggal peserta didik.`;
+            const questionText = `Uraikanlah analisis komprehensif mengenai: (a) Dua faktor utama yang mempercepat terjadinya proses ${topic}, (b) Dampak positif serta negatifnya bagi ekosistem lokal, dan (c) Rekomendasi tindakan nyata yang dapat dilakukan oleh generasi muda di sekolah!`;
+            const options = [
+                `Rubrik Jawaban: Jawaban esai harus mencakup argumentasi logis, contoh konkret, dan solusi solutif minimal 2 paragraf.`
+            ];
+            const answer = "Rubrik Penilaian: Skor Maks 100. (a) Identifikasi 2 faktor (Skor 30): Menjelaskan variabel katalis & suhu. (b) Analisis dampak ekosistem (Skor 30): Keseimbangan alam vs polutan. (c) Solusi generasi muda (Skor 40): Solutif, realistis, dan berorientasi aksi sosial.";
+            const explanation = `Pembahasan (${bloom} - HOTS): Soal esai ini menuntut keterampilan berpikir kritis tingkat tinggi (C4-C6). Peserta didik tidak hanya menghafal fakta, melainkan menghubungkan teori dengan problem solving ekologis nyata.`;
+            return { stimulus, questionText, options, correctAnswer: answer, explanation };
+        }
+
+        function renderNaskahSoal(items) {
+            const container = document.getElementById('questionsContainer');
+            container.innerHTML = '';
+
+            items.forEach((item) => {
+                const tagInfo = BLOOM_TAGS[item.bloom] || { name: 'Kognitif', color: 'bg-slate-100 text-slate-800 border-slate-200' };
+
+                const qCard = document.createElement('div');
+                qCard.className = "p-4 sm:p-5 rounded-xl border border-slate-200/90 bg-white hover:border-slate-300 transition duration-150 space-y-3";
+
+                let optionsHtml = '';
+                if (item.options && item.options.length > 0) {
+                    optionsHtml = `
+                        <div class="mt-2.5 space-y-1.5 pl-2 sm:pl-3 text-slate-700 text-xs sm:text-sm">
+                            ${item.options.map(opt => `<div class="py-0.5 leading-relaxed">${opt}</div>`).join('')}
+                        </div>
+                    `;
+                }
+
+                qCard.innerHTML = `
+                    <div class="flex items-center justify-between gap-2 flex-wrap">
+                        <div class="flex items-center gap-2">
+                            <span class="w-6 h-6 rounded-full bg-slate-900 text-white font-bold text-xs flex items-center justify-center flex-shrink-0">
+                                ${item.number}
+                            </span>
+                            <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Butir Soal #${item.number}</span>
+                        </div>
+                        <div class="flex items-center gap-1.5">
+                            <span class="px-2 py-0.5 rounded text-[11px] font-semibold bg-indigo-50 text-indigo-700 border border-indigo-200/60">
+                                ${item.typeLabel}
+                            </span>
+                            <span class="px-2 py-0.5 rounded-md text-[11px] font-bold border ${tagInfo.color}">
+                                ${item.bloom} • ${tagInfo.name}
+                            </span>
+                        </div>
+                    </div>
+
+                    ${item.stimulus ? `
+                        <div class="p-3 rounded-lg bg-slate-50 border-l-4 border-indigo-500 text-xs text-slate-600 leading-relaxed italic">
+                            "${item.stimulus}"
+                        </div>
+                    ` : ''}
+
+                    <div class="text-slate-900 font-medium text-xs sm:text-sm leading-relaxed">
+                        ${item.questionText}
+                    </div>
+
+                    ${optionsHtml}
+                `;
+
+                container.appendChild(qCard);
+            });
+        }
+
+        function renderKunciPembahasan(items) {
+            const container = document.getElementById('answersContainer');
+            container.innerHTML = '';
+
+            items.forEach((item) => {
+                const tagInfo = BLOOM_TAGS[item.bloom] || { name: 'Kognitif', color: 'bg-slate-100 text-slate-800 border-slate-200' };
+
+                const card = document.createElement('div');
+                card.className = "p-4 rounded-xl border border-slate-200 bg-white space-y-2.5 text-xs sm:text-sm";
+
+                card.innerHTML = `
+                    <div class="flex items-center justify-between border-b border-slate-100 pb-2 flex-wrap gap-2">
+                        <div class="flex items-center gap-2 font-bold text-slate-900">
+                            <span class="w-5 h-5 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center text-xs">
+                                ${item.number}
+                            </span>
+                            <span>Kunci Jawaban Soal #${item.number}</span>
+                            <span class="text-xs font-normal text-slate-500">(${item.typeLabel})</span>
+                        </div>
+                        <span class="px-2 py-0.5 rounded text-[11px] font-bold border ${tagInfo.color}">
+                            ${item.bloom}
+                        </span>
+                    </div>
+
+                    <div class="p-2.5 rounded-lg bg-emerald-50/70 border border-emerald-200/80 text-emerald-900 font-semibold">
+                        Kunci: ${item.correctAnswer}
+                    </div>
+
+                    <div class="text-slate-600 leading-relaxed bg-slate-50 p-3 rounded-lg border border-slate-100 text-xs">
+                        <span class="font-bold text-slate-800 block mb-1">Ulasan Pedagogis:</span>
+                        ${item.explanation}
+                    </div>
+                `;
+
+                container.appendChild(card);
+            });
+        }
+
+        function renderKisiKisiTable(items, subject, topic, fase) {
+            const tbody = document.getElementById('kisiKisiTableBody');
+            tbody.innerHTML = '';
+
+            items.forEach((item) => {
+                const tagInfo = BLOOM_TAGS[item.bloom] || { name: 'Kognitif', color: 'bg-slate-100 text-slate-800 border-slate-200' };
+
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-50/80 transition-colors";
+
+                tr.innerHTML = `
+                    <td class="p-2.5 text-center font-bold text-slate-800 border-r border-slate-200">${item.number}</td>
+                    <td class="p-2.5 border-r border-slate-200 text-slate-600 leading-snug">${item.cp}</td>
+                    <td class="p-2.5 border-r border-slate-200 text-slate-600 leading-snug">${item.tp}</td>
+                    <td class="p-2.5 border-r border-slate-200 font-medium text-slate-800">${item.materi}</td>
+                    <td class="p-2.5 border-r border-slate-200 text-slate-600 leading-snug">${item.indikator}</td>
+                    <td class="p-2.5 text-center border-r border-slate-200">
+                        <span class="inline-block px-1.5 py-0.5 rounded font-bold text-[10px] border ${tagInfo.color}">
+                            ${item.bloom}
+                        </span>
+                    </td>
+                    <td class="p-2.5 text-center font-medium text-slate-700">${item.typeLabel}</td>
+                `;
+
+                tbody.appendChild(tr);
+            });
+        }
+
+        function exportToWord() {
+            if (!APP_DATA.currentGeneratedItems || APP_DATA.currentGeneratedItems.length === 0) {
+                showToast("Buat naskah soal terlebih dahulu!");
+                return;
+            }
+
+            const school = document.getElementById('schoolName').value.trim() || "Satuan Pendidikan";
+            const teacher = document.getElementById('teacherName').value.trim() || "Guru Pengajar";
+            const cls = document.getElementById('classSelect').value;
+            const fase = document.getElementById('faseBadge').value;
+            const subject = document.getElementById('subjectInput').value.trim() || "Mata Pelajaran";
+            const topic = document.getElementById('topicInput').value.trim() || "Topik Pembelajaran";
+            const typeSummary = document.getElementById('kopType').textContent;
+
+            let questionsHtml = APP_DATA.currentGeneratedItems.map(item => `
+                <div style="margin-bottom: 16px;">
+                    <p style="margin: 0 0 4px 0; font-weight: bold;">
+                        ${item.number}. [${item.typeLabel} - ${item.bloom}] ${item.questionText}
+                    </p>
+                    ${item.stimulus ? `<p style="margin: 0 0 6px 0; font-style: italic; color: #4b5563; font-size: 10pt;">"${item.stimulus}"</p>` : ''}
+                    ${item.options && item.options.length > 0 ? `
+                        <div style="margin-left: 20px;">
+                            ${item.options.map(opt => `<p style="margin: 2px 0;">${opt}</p>`).join('')}
+                        </div>
+                    ` : ''}
+                </div>
+            `).join('');
+
+            let keysHtml = APP_DATA.currentGeneratedItems.map(item => `
+                <div style="margin-bottom: 12px;">
+                    <p style="margin: 0; font-weight: bold;">No. ${item.number} [${item.typeLabel} - ${item.bloom}]: ${item.correctAnswer}</p>
+                    <p style="margin: 2px 0 0 0; color: #374151; font-size: 9.5pt;"><strong>Pembahasan:</strong> ${item.explanation}</p>
+                </div>
+            `).join('');
+
+            let tableRowsHtml = APP_DATA.currentGeneratedItems.map(item => `
+                <tr>
+                    <td style="border: 1px solid #999; padding: 6px; text-align: center;">${item.number}</td>
+                    <td style="border: 1px solid #999; padding: 6px;">${item.cp}</td>
+                    <td style="border: 1px solid #999; padding: 6px;">${item.tp}</td>
+                    <td style="border: 1px solid #999; padding: 6px;">${item.materi}</td>
+                    <td style="border: 1px solid #999; padding: 6px;">${item.indikator}</td>
+                    <td style="border: 1px solid #999; padding: 6px; text-align: center;">${item.bloom}</td>
+                    <td style="border: 1px solid #999; padding: 6px; text-align: center;">${item.typeLabel}</td>
+                </tr>
+            `).join('');
+
+            const fullWordContent = `
+            <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+            <head>
+                <meta charset="utf-8">
+                <title>Naskah Soal ${subject}</title>
+                <style>
+                    body { font-family: 'Times New Roman', Times, serif; font-size: 11pt; line-height: 1.35; color: #000; }
+                    table { border-collapse: collapse; width: 100%; font-size: 9.5pt; }
+                    .kop { text-align: center; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 15px; }
+                    .meta-table td { padding: 3px 6px; font-size: 10pt; }
+                    h2, h3 { margin: 15px 0 8px 0; }
+                    .page-break { page-break-before: always; }
+                </style>
+            </head>
+            <body>
+                <div class="kop">
+                    <h2 style="margin: 0; font-size: 14pt; text-transform: uppercase;">${school}</h2>
+                    <p style="margin: 2px 0; font-size: 11pt; font-weight: bold;">LEMBAR ASESMEN ASLI KURIKULUM MERDEKA / KURIKULUM NASIONAL</p>
+                    <p style="margin: 0; font-size: 9.5pt; font-style: italic;">Tahun Ajaran 2026/2027</p>
+                </div>
+
+                <table class="meta-table" style="margin-bottom: 16px;">
+                    <tr>
+                        <td width="20%"><strong>Mata Pelajaran</strong></td>
+                        <td width="30%">: ${subject}</td>
+                        <td width="20%"><strong>Kelas / Fase</strong></td>
+                        <td width="30%">: ${cls} (${fase})</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Guru Pengajar</strong></td>
+                        <td>: ${teacher}</td>
+                        <td><strong>Materi Pokok</strong></td>
+                        <td>: ${topic}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Bentuk Asesmen</strong></td>
+                        <td colspan="3">: ${typeSummary}</td>
+                    </tr>
+                </table>
+
+                <h3 style="border-bottom: 1px solid #333; padding-bottom: 4px;">I. NASKAH SOAL</h3>
+                ${questionsHtml}
+
+                <div class="page-break"></div>
+                <h3 style="border-bottom: 1px solid #333; padding-bottom: 4px;">II. KUNCI JAWABAN DAN PEMBAHASAN DETAIL</h3>
+                ${keysHtml}
+
+                <div class="page-break"></div>
+                <h3 style="border-bottom: 1px solid #333; padding-bottom: 4px;">III. KISI-KISI PENULISAN SOAL (7 KOLOM)</h3>
+                <table>
+                    <thead>
+                        <tr style="background-color: #f3f4f6;">
+                            <th style="border: 1px solid #999; padding: 6px; width: 5%;">No</th>
+                            <th style="border: 1px solid #999; padding: 6px; width: 22%;">Capaian Pembelajaran (CP)</th>
+                            <th style="border: 1px solid #999; padding: 6px; width: 22%;">Tujuan Pembelajaran (TP)</th>
+                            <th style="border: 1px solid #999; padding: 6px; width: 15%;">Materi</th>
+                            <th style="border: 1px solid #999; padding: 6px; width: 20%;">Indikator Soal</th>
+                            <th style="border: 1px solid #999; padding: 6px; width: 8%;">Level</th>
+                            <th style="border: 1px solid #999; padding: 6px; width: 8%;">Bentuk</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${tableRowsHtml}
+                    </tbody>
+                </table>
+            </body>
+            </html>
+            `;
+
+            const blob = new Blob(['\ufeff', fullWordContent], { type: 'application/msword' });
+            const url = URL.createObjectURL(blob);
+            const downloadLink = document.createElement("a");
+            downloadLink.href = url;
+            downloadLink.download = `Naskah_Soal_${subject.replace(/\s+/g, '_')}_${cls}.doc`;
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+            URL.revokeObjectURL(url);
+            showToast("Dokumen Word (.doc) berhasil diunduh!");
+        }
+
+        function exportToPDF() {
+            if (!APP_DATA.currentGeneratedItems || APP_DATA.currentGeneratedItems.length === 0) {
+                showToast("Buat naskah soal terlebih dahulu!");
+                return;
+            }
+
+            showToast("Menyiapkan dokumen PDF...");
+
+            // Temporary display all tabs for unified PDF compilation
+            const naskah = document.getElementById('tabContent-naskah');
+            const kunci = document.getElementById('tabContent-kunci');
+            const kisi = document.getElementById('tabContent-kisi');
+
+            const prevKunciHidden = kunci.classList.contains('hidden');
+            const prevKisiHidden = kisi.classList.contains('hidden');
+
+            kunci.classList.remove('hidden');
+            kisi.classList.remove('hidden');
+
+            const element = document.getElementById('exportableArea');
+            const subject = document.getElementById('subjectInput').value.trim() || "Soal";
+            const cls = document.getElementById('classSelect').value || "Kelas";
+
+            const opt = {
+                margin:       [10, 10, 10, 10],
+                filename:     `Asesmen_${subject.replace(/\s+/g, '_')}_${cls}.pdf`,
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2, useCORS: true },
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            if (typeof html2pdf !== 'undefined') {
+                html2pdf().set(opt).from(element).save().then(() => {
+                    if (prevKunciHidden) kunci.classList.add('hidden');
+                    if (prevKisiHidden) kisi.classList.add('hidden');
+                    showToast("File PDF berhasil disimpan!");
+                }).catch(() => {
+                    // Fallback to window print
+                    if (prevKunciHidden) kunci.classList.add('hidden');
+                    if (prevKisiHidden) kisi.classList.add('hidden');
+                    window.print();
+                });
+            } else {
+                window.print();
+                if (prevKunciHidden) kunci.classList.add('hidden');
+                if (prevKisiHidden) kisi.classList.add('hidden');
+            }
+        }
+
+        function resetFormToDefault() {
+            document.getElementById('schoolName').value = "SD Negeri Merdeka Belajar";
+            document.getElementById('teacherName').value = "Budi Santoso, S.Pd.";
+            document.getElementById('educationLevel').value = "SD/MI";
+            updateClassesAndFase();
+            document.getElementById('subjectInput').value = "IPAS (Ilmu Pengetahuan Alam dan Sosial)";
+            document.getElementById('topicInput').value = "Wujud Benda dan Perubahannya";
+            
+            // Reset checkboxes
+            document.querySelectorAll('input[name="qTypeCheck"]').forEach(cb => {
+                cb.checked = (cb.value === 'pg');
+            });
+            updateSelectedTypesBadge();
+
+            document.getElementById('questionCount').value = "5";
+            document.getElementById('questionCountDisplay').textContent = "5 Butir";
+            document.getElementById('cognitiveProfile').value = "standar";
+            renderCognitiveBadgePreview();
+            generateAssessment();
+            showToast("Pengaturan formulir dikembalikan ke bawaan.");
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            updateClassesAndFase();
+            updateSelectedTypesBadge();
+            renderCognitiveBadgePreview();
+            generateAssessment();
+            if (window.lucide) lucide.createIcons();
+        });
+    </script>
+</body>
+</html>
