@@ -11,7 +11,7 @@
   <!-- Font Awesome Icons CDN -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
-  <!-- Google Fonts: Plus Jakarta Sans & Inter -->
+  <!-- Google Fonts: Plus Jakarta Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -64,7 +64,7 @@
         font-size: 11pt !important;
         color: #000000 !important;
       }
-      .no-print, header, nav, #panel-config, #action-bar, .toast-container, .btn-action {
+      .no-print, header, nav, #panel-config, #action-bar, #toast-container, .btn-action {
         display: none !important;
       }
       #print-area {
@@ -74,6 +74,10 @@
         padding: 0 !important;
         box-shadow: none !important;
         border: none !important;
+      }
+      .tab-pane {
+        display: block !important;
+        margin-bottom: 2rem !important;
       }
       .page-break {
         page-break-before: always;
@@ -86,7 +90,7 @@
       }
     }
 
-    /* Smooth tab indicator transition */
+    /* Tab indicator active style */
     .tab-btn.active {
       border-bottom-color: #4f46e5;
       color: #4f46e5;
@@ -115,10 +119,10 @@
       </div>
 
       <div class="flex items-center space-x-2">
-        <button id="btn-quick-sample" type="button" class="inline-flex items-center px-3 py-1.5 text-xs font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors">
+        <button id="btn-quick-sample" type="button" class="inline-flex items-center px-3 py-1.5 text-xs font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors cursor-pointer">
           <i class="fa-solid fa-wand-magic-sparkles mr-1.5 text-amber-500"></i> Muat Data Sampel
         </button>
-        <button id="btn-reset-all" type="button" class="inline-flex items-center px-3 py-1.5 text-xs font-semibold text-rose-600 hover:bg-rose-50 rounded-lg transition-colors">
+        <button id="btn-reset-all" type="button" class="inline-flex items-center px-3 py-1.5 text-xs font-semibold text-rose-600 hover:bg-rose-50 rounded-lg transition-colors cursor-pointer">
           <i class="fa-solid fa-rotate-left mr-1.5"></i> Reset
         </button>
       </div>
@@ -173,7 +177,7 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <label for="select-jenjang" class="block text-xs font-semibold text-slate-700 mb-1">Jenjang Pendidikan</label>
-                <select id="select-jenjang" class="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all">
+                <select id="select-jenjang" class="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all cursor-pointer">
                   <option value="TK / PAUD">TK / PAUD</option>
                   <option value="SD / MI">SD / MI</option>
                   <option value="SMP / MTs">SMP / MTs</option>
@@ -184,13 +188,13 @@
 
               <div>
                 <label for="select-kelas" class="block text-xs font-semibold text-slate-700 mb-1">Tingkat / Kelas</label>
-                <select id="select-kelas" class="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all">
-                  <!-- Diisi secara dinamis oleh JavaScript -->
+                <select id="select-kelas" class="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all cursor-pointer">
+                  <!-- Populated dynamically via JS -->
                 </select>
               </div>
             </div>
 
-            <!-- Fase (Auto Populated) & Mata Pelajaran -->
+            <!-- Fase & Mata Pelajaran -->
             <div class="grid grid-cols-1 sm:grid-cols-12 gap-3">
               <div class="sm:col-span-5">
                 <label for="input-fase" class="block text-xs font-semibold text-slate-700 mb-1">
@@ -208,12 +212,12 @@
               <div class="sm:col-span-7">
                 <label for="input-mapel" class="block text-xs font-semibold text-slate-700 mb-1">Mata Pelajaran</label>
                 <input type="text" id="input-mapel" value="Informatika & Pemrograman Dasar" 
-                  placeholder="Contoh: Matematika, IPA, IPAS"
+                  placeholder="Contoh: Matematika, IPA, Biologi"
                   class="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all">
               </div>
             </div>
 
-            <!-- Topik / Materi / Capaian Pembelajaran -->
+            <!-- Topik / Materi -->
             <div>
               <div class="flex items-center justify-between mb-1">
                 <label for="input-materi" class="block text-xs font-semibold text-slate-700">Topik Materi / Capaian Pembelajaran (CP / TP)</label>
@@ -231,55 +235,117 @@
           <div class="flex items-center justify-between pb-4 border-b border-slate-100 mb-4">
             <div class="flex items-center space-x-2.5">
               <span class="w-7 h-7 rounded-lg bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold text-xs">2</span>
-              <h2 class="font-bold text-slate-900 text-base">Parameter & Kognitif Bloom</h2>
+              <h2 class="font-bold text-slate-900 text-base">Bentuk Soal & Parameter Kognitif</h2>
             </div>
-            <span class="text-xs font-medium text-slate-400">Taksonomi & Format</span>
+            <span class="text-xs font-medium text-slate-400">Distribusi Butir</span>
           </div>
 
-          <!-- Dropdown Jumlah Soal (1 - 25 Soal) -->
-          <div class="mb-5 bg-slate-50/80 p-3.5 rounded-xl border border-slate-100">
-            <div class="flex items-center justify-between mb-1.5">
-              <label for="select-jumlah" class="text-xs font-semibold text-slate-700">Jumlah Soal yang Digenerate</label>
-              <span class="text-[11px] text-indigo-600 font-semibold bg-indigo-50 px-2 py-0.5 rounded border border-indigo-200">Rentang 1 - 25</span>
+          <!-- Indikator Total Soal Akumulasi -->
+          <div class="mb-4 bg-indigo-50/60 border border-indigo-100 rounded-xl p-3 flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+              <div class="w-8 h-8 rounded-lg bg-indigo-600 text-white flex items-center justify-center text-xs font-bold shadow-xs">
+                <i class="fa-solid fa-list-ol"></i>
+              </div>
+              <div>
+                <span class="text-xs font-bold text-slate-800 block">Total Soal Asesmen</span>
+                <span class="text-[11px] text-slate-500">Akumulasi butir dari bentuk soal aktif</span>
+              </div>
             </div>
-            <div class="relative">
-              <select id="select-jumlah" class="w-full px-3 py-2 text-sm font-semibold text-slate-800 bg-white border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all cursor-pointer">
-                <!-- Opsi 1 - 25 akan diinisialisasi otomatis via JavaScript -->
-              </select>
+            <div class="text-right">
+              <span id="badge-total-soal" class="text-lg font-black text-indigo-700 bg-white px-3 py-0.5 rounded-lg border border-indigo-200 shadow-2xs">10</span>
+              <span class="text-[11px] text-slate-500 font-semibold ml-1">Butir</span>
             </div>
-            <p class="text-[10px] text-slate-400 mt-1.5 font-medium">Pilih jumlah butir soal asesmen yang ingin disusun secara otomatis (Default: 10 Soal).</p>
           </div>
 
-          <!-- Tipe Soal (Multi-select) -->
+          <!-- Bentuk Soal dengan Dropdown Jumlah Masing-Masing -->
           <div class="mb-5">
             <label class="block text-xs font-semibold text-slate-700 mb-2">
-              Bentuk Soal Asesmen <span class="text-slate-400 font-normal">(Pilih minimal 1 bentuk)</span>
+              Pilih Bentuk Soal & Tentukan Jumlah Butir Masing-Masing:
             </label>
-            <div class="grid grid-cols-2 gap-2 text-xs">
-              <label class="flex items-center p-2.5 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition-colors bg-white">
-                <input type="checkbox" value="Pilihan Ganda" class="checkbox-tipe rounded text-indigo-600 focus:ring-indigo-500 mr-2" checked>
-                <span class="font-medium text-slate-700">Pilihan Ganda (PG)</span>
-              </label>
-              <label class="flex items-center p-2.5 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition-colors bg-white">
-                <input type="checkbox" value="PG Kompleks" class="checkbox-tipe rounded text-indigo-600 focus:ring-indigo-500 mr-2" checked>
-                <span class="font-medium text-slate-700">PG Kompleks (Multi)</span>
-              </label>
-              <label class="flex items-center p-2.5 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition-colors bg-white">
-                <input type="checkbox" value="Menjodohkan" class="checkbox-tipe rounded text-indigo-600 focus:ring-indigo-500 mr-2" checked>
-                <span class="font-medium text-slate-700">Menjodohkan</span>
-              </label>
-              <label class="flex items-center p-2.5 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition-colors bg-white">
-                <input type="checkbox" value="Benar/Salah" class="checkbox-tipe rounded text-indigo-600 focus:ring-indigo-500 mr-2" checked>
-                <span class="font-medium text-slate-700">Benar / Salah</span>
-              </label>
-              <label class="flex items-center p-2.5 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition-colors bg-white">
-                <input type="checkbox" value="Uraian Singkat" class="checkbox-tipe rounded text-indigo-600 focus:ring-indigo-500 mr-2" checked>
-                <span class="font-medium text-slate-700">Uraian Singkat</span>
-              </label>
-              <label class="flex items-center p-2.5 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition-colors bg-white">
-                <input type="checkbox" value="Uraian Panjang" class="checkbox-tipe rounded text-indigo-600 focus:ring-indigo-500 mr-2" checked>
-                <span class="font-medium text-slate-700">Uraian / Essay</span>
-              </label>
+            <div id="container-bentuk-soal" class="space-y-2">
+              <!-- Item 1: Pilihan Ganda -->
+              <div class="flex items-center justify-between p-2.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 transition-colors">
+                <label class="flex items-center cursor-pointer flex-1 mr-2">
+                  <input type="checkbox" data-type="Pilihan Ganda" class="checkbox-bentuk rounded text-indigo-600 focus:ring-indigo-500 mr-2.5" checked>
+                  <span class="text-xs font-medium text-slate-800">Pilihan Ganda (A s.d. E)</span>
+                </label>
+                <div class="flex items-center space-x-1.5">
+                  <span class="text-[11px] text-slate-400 font-medium">Jumlah:</span>
+                  <select id="count-pg" data-type="Pilihan Ganda" class="select-count-bentuk px-2 py-1 text-xs font-semibold bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none cursor-pointer">
+                    <!-- Populated 1 - 25 via JS -->
+                  </select>
+                </div>
+              </div>
+
+              <!-- Item 2: PG Kompleks -->
+              <div class="flex items-center justify-between p-2.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 transition-colors">
+                <label class="flex items-center cursor-pointer flex-1 mr-2">
+                  <input type="checkbox" data-type="PG Kompleks" class="checkbox-bentuk rounded text-indigo-600 focus:ring-indigo-500 mr-2.5" checked>
+                  <span class="text-xs font-medium text-slate-800">PG Kompleks (Multi Jawaban)</span>
+                </label>
+                <div class="flex items-center space-x-1.5">
+                  <span class="text-[11px] text-slate-400 font-medium">Jumlah:</span>
+                  <select id="count-pgk" data-type="PG Kompleks" class="select-count-bentuk px-2 py-1 text-xs font-semibold bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none cursor-pointer">
+                    <!-- Populated 1 - 25 via JS -->
+                  </select>
+                </div>
+              </div>
+
+              <!-- Item 3: Menjodohkan -->
+              <div class="flex items-center justify-between p-2.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 transition-colors">
+                <label class="flex items-center cursor-pointer flex-1 mr-2">
+                  <input type="checkbox" data-type="Menjodohkan" class="checkbox-bentuk rounded text-indigo-600 focus:ring-indigo-500 mr-2.5" checked>
+                  <span class="text-xs font-medium text-slate-800">Menjodohkan (Matching)</span>
+                </label>
+                <div class="flex items-center space-x-1.5">
+                  <span class="text-[11px] text-slate-400 font-medium">Jumlah:</span>
+                  <select id="count-jodoh" data-type="Menjodohkan" class="select-count-bentuk px-2 py-1 text-xs font-semibold bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none cursor-pointer">
+                    <!-- Populated 1 - 25 via JS -->
+                  </select>
+                </div>
+              </div>
+
+              <!-- Item 4: Benar / Salah -->
+              <div class="flex items-center justify-between p-2.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 transition-colors">
+                <label class="flex items-center cursor-pointer flex-1 mr-2">
+                  <input type="checkbox" data-type="Benar/Salah" class="checkbox-bentuk rounded text-indigo-600 focus:ring-indigo-500 mr-2.5" checked>
+                  <span class="text-xs font-medium text-slate-800">Benar / Salah (True/False)</span>
+                </label>
+                <div class="flex items-center space-x-1.5">
+                  <span class="text-[11px] text-slate-400 font-medium">Jumlah:</span>
+                  <select id="count-bs" data-type="Benar/Salah" class="select-count-bentuk px-2 py-1 text-xs font-semibold bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none cursor-pointer">
+                    <!-- Populated 1 - 25 via JS -->
+                  </select>
+                </div>
+              </div>
+
+              <!-- Item 5: Uraian Singkat -->
+              <div class="flex items-center justify-between p-2.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 transition-colors">
+                <label class="flex items-center cursor-pointer flex-1 mr-2">
+                  <input type="checkbox" data-type="Uraian Singkat" class="checkbox-bentuk rounded text-indigo-600 focus:ring-indigo-500 mr-2.5" checked>
+                  <span class="text-xs font-medium text-slate-800">Uraian Singkat</span>
+                </label>
+                <div class="flex items-center space-x-1.5">
+                  <span class="text-[11px] text-slate-400 font-medium">Jumlah:</span>
+                  <select id="count-singkat" data-type="Uraian Singkat" class="select-count-bentuk px-2 py-1 text-xs font-semibold bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none cursor-pointer">
+                    <!-- Populated 1 - 25 via JS -->
+                  </select>
+                </div>
+              </div>
+
+              <!-- Item 6: Uraian Panjang -->
+              <div class="flex items-center justify-between p-2.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 transition-colors">
+                <label class="flex items-center cursor-pointer flex-1 mr-2">
+                  <input type="checkbox" data-type="Uraian Panjang" class="checkbox-bentuk rounded text-indigo-600 focus:ring-indigo-500 mr-2.5">
+                  <span class="text-xs font-medium text-slate-800">Uraian / Kasus Panjang</span>
+                </label>
+                <div class="flex items-center space-x-1.5">
+                  <span class="text-[11px] text-slate-400 font-medium">Jumlah:</span>
+                  <select id="count-panjang" data-type="Uraian Panjang" class="select-count-bentuk px-2 py-1 text-xs font-semibold bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none cursor-pointer" disabled>
+                    <!-- Populated 1 - 25 via JS -->
+                  </select>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -340,13 +406,14 @@
           </div>
 
           <!-- Action Buttons inside Left Panel -->
-          <div class="mt-6 pt-4 border-t border-slate-100 flex flex-col sm:flex-row gap-2.5">
-            <button id="btn-generate-main" type="button" class="flex-1 inline-flex items-center justify-center px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm text-white bg-indigo-600 hover:bg-indigo-700 shadow-md shadow-indigo-200 transition-all">
-              <i class="fa-solid fa-sparkles mr-2"></i> Generate Soal Simulasi
+          <div class="mt-6 pt-4 border-t border-slate-100">
+            <button id="btn-generate-main" type="button" class="w-full inline-flex items-center justify-center px-4 py-3 rounded-xl font-bold text-xs sm:text-sm text-white bg-gradient-to-r from-indigo-600 to-blue-700 hover:from-indigo-700 hover:to-blue-800 shadow-md shadow-indigo-200 transition-all cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed">
+              <i id="icon-generate" class="fa-solid fa-wand-magic-sparkles mr-2"></i>
+              <span id="label-generate">Yuk Generate Hasil Soalnya</span>
             </button>
-            <button id="btn-copy-prompt" type="button" class="inline-flex items-center justify-center px-3.5 py-2.5 rounded-xl font-semibold text-xs sm:text-sm text-indigo-700 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 transition-all">
-              <i class="fa-solid fa-clipboard mr-1.5"></i> Salin Prompt AI
-            </button>
+          </div>
+          <div class="flex items-center justify-center text-[11px] text-slate-500 pt-2">
+            <span class="flex items-center"><i class="fa-solid fa-bolt text-amber-500 mr-1.5"></i> Generator Presisi: Komposisi Jumlah Sesuai Bentuk Soal</span>
           </div>
         </section>
 
@@ -365,10 +432,10 @@
 
           <!-- Export Action Buttons -->
           <div class="flex items-center space-x-2">
-            <button id="btn-export-word" type="button" class="inline-flex items-center px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 bg-white border border-slate-300 hover:bg-slate-50 hover:border-slate-400 shadow-xs transition-all">
+            <button id="btn-export-word" type="button" class="inline-flex items-center px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 bg-white border border-slate-300 hover:bg-slate-50 hover:border-slate-400 shadow-xs transition-all cursor-pointer">
               <i class="fa-solid fa-file-word text-blue-600 mr-1.5 text-sm"></i> Unduh Word (.doc)
             </button>
-            <button id="btn-export-pdf" type="button" class="inline-flex items-center px-3 py-2 rounded-xl text-xs font-semibold text-white bg-emerald-600 hover:bg-emerald-700 shadow-xs shadow-emerald-200 transition-all">
+            <button id="btn-export-pdf" type="button" class="inline-flex items-center px-3 py-2 rounded-xl text-xs font-semibold text-white bg-emerald-600 hover:bg-emerald-700 shadow-xs shadow-emerald-200 transition-all cursor-pointer">
               <i class="fa-solid fa-print mr-1.5 text-sm"></i> Cetak / Simpan PDF
             </button>
           </div>
@@ -377,13 +444,13 @@
         <!-- Tab Navigation (No-Print) -->
         <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
           <div class="flex border-b border-slate-200 bg-slate-50/70 text-xs font-semibold px-4 pt-2 gap-2 sm:gap-4 no-print overflow-x-auto">
-            <button id="tab-btn-kisi" type="button" class="tab-btn active pb-3 px-3 border-b-2 border-indigo-600 text-indigo-600 flex items-center whitespace-nowrap">
+            <button id="tab-btn-kisi" type="button" class="tab-btn active pb-3 px-3 border-b-2 border-indigo-600 text-indigo-600 flex items-center whitespace-nowrap cursor-pointer">
               <i class="fa-solid fa-table-list mr-2"></i> Bagian A: Kisi-Kisi Soal
             </button>
-            <button id="tab-btn-soal" type="button" class="tab-btn pb-3 px-3 border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center whitespace-nowrap">
+            <button id="tab-btn-soal" type="button" class="tab-btn pb-3 px-3 border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center whitespace-nowrap cursor-pointer">
               <i class="fa-solid fa-file-lines mr-2"></i> Bagian B: Lembar Peserta Didik
             </button>
-            <button id="tab-btn-kunci" type="button" class="tab-btn pb-3 px-3 border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center whitespace-nowrap">
+            <button id="tab-btn-kunci" type="button" class="tab-btn pb-3 px-3 border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center whitespace-nowrap cursor-pointer">
               <i class="fa-solid fa-key mr-2"></i> Bagian C: Kunci & Rubrik
             </button>
           </div>
@@ -408,7 +475,7 @@
               <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-3 border-t border-slate-200 text-left text-xs bg-slate-50 p-2.5 rounded-lg">
                 <div>
                   <span class="text-slate-500 block text-[10px]">MATA PELAJARAN</span>
-                  <strong id="meta-mapel" class="text-slate-800">Informatika</strong>
+                  <strong id="meta-mapel" class="text-slate-800">Informatika & Pemrograman Dasar</strong>
                 </div>
                 <div>
                   <span class="text-slate-500 block text-[10px]">JENJANG / TINGKAT</span>
@@ -426,6 +493,7 @@
             </div>
 
             <!-- TAB CONTENT CONTAINER -->
+            <!-- Tab Content A: Kisi-kisi Matriks -->
             <div id="tab-content-kisi" class="tab-pane space-y-4">
               <div class="flex items-center justify-between pb-2 border-b border-slate-100">
                 <h3 class="font-bold text-slate-900 text-sm flex items-center">
@@ -440,7 +508,7 @@
                     <tr>
                       <th class="p-2.5 border-b border-r border-slate-200 w-10 text-center">No</th>
                       <th class="p-2.5 border-b border-r border-slate-200">Capaian / Indikator Soal</th>
-                      <th class="p-2.5 border-b border-r border-slate-200 w-28 text-center">Bentuk Soal</th>
+                      <th class="p-2.5 border-b border-r border-slate-200 w-32 text-center">Bentuk Soal</th>
                       <th class="p-2.5 border-b border-r border-slate-200 w-28 text-center">Level Kognitif</th>
                       <th class="p-2.5 border-b border-slate-200 w-16 text-center">Bobot</th>
                     </tr>
@@ -492,36 +560,6 @@
   <!-- Toast Notification Container -->
   <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col space-y-2 pointer-events-none"></div>
 
-  <!-- Prompt Modal Preview (Dialog ringkasan AI prompt) -->
-  <div id="modal-prompt" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 hidden no-print">
-    <div class="bg-white rounded-2xl max-w-2xl w-full p-6 shadow-2xl border border-slate-100 flex flex-col max-h-[90vh]">
-      <div class="flex items-center justify-between pb-3 border-b border-slate-100">
-        <div class="flex items-center space-x-2">
-          <div class="w-8 h-8 rounded-lg bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold text-sm">
-            <i class="fa-solid fa-robot"></i>
-          </div>
-          <div>
-            <h3 class="font-bold text-slate-900 text-sm">Prompt Ringkasan Generator AI</h3>
-            <p class="text-[11px] text-slate-500">Salin untuk digunakan langsung di Gemini atau LLM lainnya</p>
-          </div>
-        </div>
-        <button id="btn-close-modal" type="button" class="text-slate-400 hover:text-slate-700 p-1 rounded-lg">
-          <i class="fa-solid fa-xmark text-base"></i>
-        </button>
-      </div>
-
-      <div class="my-4 flex-1 overflow-y-auto">
-        <pre id="modal-prompt-content" class="text-xs bg-slate-900 text-slate-100 p-4 rounded-xl whitespace-pre-wrap font-mono leading-relaxed selection:bg-indigo-500 selection:text-white"></pre>
-      </div>
-
-      <div class="pt-3 border-t border-slate-100 flex items-center justify-end space-x-2">
-        <button id="btn-copy-modal-prompt" type="button" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold rounded-xl shadow-xs transition-colors">
-          <i class="fa-solid fa-copy mr-1.5"></i> Salin ke Clipboard
-        </button>
-      </div>
-    </div>
-  </div>
-
   <script>
     /* =========================================================
        1. DATA STRUCTURES & CURRICULUM MERDEKA MAPPING
@@ -534,7 +572,16 @@
       "SMK": ["Kelas 10", "Kelas 11", "Kelas 12"]
     };
 
-    // Fungsi mapping otomatis Fase Kurikulum Merdeka
+    const DEFAULT_TYPE_COUNTS = {
+      "Pilihan Ganda": 5,
+      "PG Kompleks": 2,
+      "Menjodohkan": 1,
+      "Benar/Salah": 1,
+      "Uraian Singkat": 1,
+      "Uraian Panjang": 1
+    };
+
+    // Mapping Fase Kurikulum Merdeka
     function getFaseFromJenjangKelas(jenjang, kelas) {
       if (jenjang === "TK / PAUD") return "Fase Fondasi";
       
@@ -556,126 +603,9 @@
       return "Fase Reguler";
     }
 
-    // Bank template generator cerdas untuk mensimulasikan soal asesmen relevan
-    const MOCK_QUESTION_TEMPLATES = [
-      {
-        type: "Pilihan Ganda",
-        cognitive: "C2 (Memahami)",
-        badgeClass: "bg-emerald-50 text-emerald-700 border-emerald-200",
-        getQ: (mapel, topik) => ({
-          indicator: `Peserta didik mampu mengidentifikasi konsep fundamental terkait ${topik}.`,
-          stimulus: `Dalam pembelajaran ${mapel} materi "${topik}", pemahaman mengenai definisi dan fungsi dasar sangat krusial sebelum melangkah ke tahap implementasi.`,
-          question: `Manakah dari pernyataan berikut yang paling tepat mendefinisikan prinsip dasar dari materi "${topik}"?`,
-          options: [
-            `A. Prosedur terstruktur yang digunakan untuk menyelesaikan masalah secara logis dan terukur`,
-            `B. Kumpulan data statis yang tidak dapat dimanipulasi oleh instruksi perulangan`,
-            `C. Perangkat keras khusus yang berfungsi mempercepat komputasi grafis`,
-            `D. Dokumentasi hasil pengujian sistem tanpa adanya alur algoritma logis`,
-            `E. Protokol komunikasi data nirkabel untuk transmisi paket informasi jarak jauh`
-          ],
-          key: "A",
-          explanation: "Opsi A tepat karena memuat esensi utama konsep dasar yang terstruktur, logis, dan terukur sesuai capaian pembelajaran fase terkait.",
-          rubrik: "Skor 1 jika memilih A; Skor 0 jika memilih opsi lainnya."
-        })
-      },
-      {
-        type: "Pilihan Ganda",
-        cognitive: "C3 (Mengaplikasikan)",
-        badgeClass: "bg-amber-50 text-amber-700 border-amber-200",
-        getQ: (mapel, topik) => ({
-          indicator: `Peserta didik dapat menerapkan aturan logika dan sintaksis pada kasus riil topik ${topik}.`,
-          stimulus: `Sebuah sistem mini otomatisasi diatur dengan kondisi: "Jika sensor suhu mendeteksi nilai > 35°C dan kelembaban < 40%, maka kipas pendingin aktif selama 15 menit".`,
-          question: `Berdasarkan skenario penerapan ${topik} di atas, apa yang terjadi jika sensor membaca suhu 38°C dan kelembaban 55%?`,
-          options: [
-            `A. Kipas pendingin tetap aktif selama 15 menit penuh`,
-            `B. Kipas pendingin tidak aktif karena salah satu syarat konjungsi logika tidak terpenuhi`,
-            `C. Sistem otomatis mengalami crash karena pembacaan nilai tidak valid`,
-            `D. Kipas pendingin aktif selama 7.5 menit sesuai separuh nilai kelembaban`,
-            `E. Sensor memicu alarm darurat secara terus-menerus tanpa mengaktifkan kipas`
-          ],
-          key: "B",
-          explanation: "Karena menggunakan operator konjungsi logika 'DAN' (AND), kedua syarat harus bernilai benar. Kondisi kelembaban 55% tidak memenuhi syarat (<40%), sehingga kipas tidak aktif.",
-          rubrik: "Skor 1 jika memilih B; Skor 0 jika memilih lainnya."
-        })
-      },
-      {
-        type: "PG Kompleks",
-        cognitive: "C4 (Menganalisis)",
-        badgeClass: "bg-rose-50 text-rose-700 border-rose-200",
-        getQ: (mapel, topik) => ({
-          indicator: `Peserta didik mampu menganalisis validitas multi-faktor dan relasi sebab-akibat pada ${topik}.`,
-          stimulus: `Tinjau grafik efisiensi berikut: Tim pengembang membandingkan dua pendekatan algoritma pada topik "${topik}". Pendekatan X membutuhkan memori rendah namun waktu eksekusi linear, sementara Pendekatan Y menggunakan tabel lookup memori besar dengan waktu konstan.`,
-          question: `Pilihlah dua (2) pernyataan yang BENAR berdasarkan analisis perbandingan di atas!`,
-          options: [
-            `[ ] Pernyataan 1: Pendekatan X lebih ideal diterapkan pada mikrokontroler dengan memori penyimpanan terbatas.`,
-            `[ ] Pernyataan 2: Pendekatan Y selalu lebih lambat dibandingkan Pendekatan X pada data berukuran masif.`,
-            `[ ] Pernyataan 3: Terjadi trade-off (kompromi) antara efisiensi ruang memori dan kecepatan waktu eksekusi.`,
-            `[ ] Pernyataan 4: Kedua pendekatan tidak memiliki korelasi dengan prinsip komputasi logis.`
-          ],
-          key: "Pernyataan 1 dan Pernyataan 3",
-          explanation: "Pernyataan 1 benar (hemat memori cocok untuk microcontroller). Pernyataan 3 benar karena mencerminkan konsep fundamental time-space trade off.",
-          rubrik: "Skor 2: Memilih kedua pernyataan benar; Skor 1: Memilih 1 benar; Skor 0: Salah semua."
-        })
-      },
-      {
-        type: "Menjodohkan",
-        cognitive: "C2 (Memahami)",
-        badgeClass: "bg-emerald-50 text-emerald-700 border-emerald-200",
-        getQ: (mapel, topik) => ({
-          indicator: `Peserta didik dapat memasangkan istilah teknis dengan peran fungsionalnya dalam lingkup ${topik}.`,
-          stimulus: `Pasangkanlah elemen/komponen di Kolom Kiri dengan fungsi yang sesuai di Kolom Kanan secara presisi:`,
-          pairs: [
-            { left: "1. Kondisi Percabangan (If-Else)", right: "A. Menentukan alur keputusan berdasarkan evaluasi nilai boolean" },
-            { left: "2. Counter Variabel", right: "B. Menyimpan pencacah iterasi pada perulangan for / while" },
-            { left: "3. Break Statement", right: "C. Menghentikan paksa siklus eksekusi sebelum iterasi selesai" }
-          ],
-          key: "1 -> A, 2 -> B, 3 -> C",
-          explanation: "Setiap pasangan telah disesuaikan dengan terminologi baku sintaks pemrograman dan logika kontrol alur.",
-          rubrik: "Skor maksimal 3 (1 poin untuk tiap pasangan yang tepat)."
-        })
-      },
-      {
-        type: "Benar/Salah",
-        cognitive: "C3 (Mengaplikasikan)",
-        badgeClass: "bg-amber-50 text-amber-700 border-amber-200",
-        getQ: (mapel, topik) => ({
-          indicator: `Peserta didik mampu memvalidasi kebenaran sebuah proposisi logis terkait ${topik}.`,
-          stimulus: `Perhatikan pernyataan berikut terkait implementasi materi "${topik}": "Dalam sebuah loop bersarang (nested loop), perulangan pada blok bagian dalam akan dieksekusi tuntas untuk setiap satu siklus perulangan pada blok bagian luar."`,
-          question: `Apakah pernyataan di atas BENAR atau SALAH? Berikan alasan logis singkat!`,
-          key: "BENAR",
-          explanation: "Pernyataan benar karena mekanisme nested loop mewajibkan inner loop berputar dari nilai awal hingga akhir setiap kali outer loop maju 1 tahap.",
-          rubrik: "Skor 1 untuk jawaban Benar dan penjelasan yang selaras."
-        })
-      },
-      {
-        type: "Uraian Singkat",
-        cognitive: "C3 (Mengaplikasikan)",
-        badgeClass: "bg-amber-50 text-amber-700 border-amber-200",
-        getQ: (mapel, topik) => ({
-          indicator: `Peserta didik mampu menyebutkan keluaran (output) tepat dari suatu proses pemecahan masalah ${topik}.`,
-          stimulus: `Diberikan nilai awal variabel counter = 2. Algoritma melakukan perulangan sebanyak 4 kali dengan operasi: counter = counter * 2.`,
-          question: `Tuliskan nilai akhir dari variabel counter setelah seluruh proses perulangan selesai dieksekusi!`,
-          key: "32",
-          explanation: "Iterasi 1: 2*2=4; Iterasi 2: 4*2=8; Iterasi 3: 8*2=16; Iterasi 4: 16*2=32.",
-          rubrik: "Skor 2 jika jawaban tepat '32'; Skor 0 jika keliru."
-        })
-      },
-      {
-        type: "Uraian Panjang",
-        cognitive: "C5 (Mengevaluasi & Merancang)",
-        badgeClass: "bg-purple-50 text-purple-700 border-purple-200",
-        getQ: (mapel, topik) => ({
-          indicator: `Peserta didik dapat merancang solusi algoritmis komprehensif terhadap studi kasus kontekstual pada ${topik}.`,
-          stimulus: `Kasus Nyata: Koperasi sekolah membutuhkan sistem kasir sederhana yang memberikan diskon 10% jika total belanja minimal Rp 100.000, dan diskon 15% jika pelanggan memiliki kartu anggota aktif (member card).`,
-          question: `Rancanglah bagan alir (flowchart) atau pseudocode terstruktur untuk menyelesaikan kasus di atas! Jelaskan struktur percabangan logika yang Anda gunakan beserta pertimbangan penanganan kesalahan (error handling) jika input belanja bernilai negatif.`,
-          key: "Pseudocode dengan nested if-else atau multi-condition, disertai validasi input (total >= 0).",
-          explanation: "Siswa harus menunjukkan pemahaman logika percabangan bertingkat dan sanitasi validasi data masukan.",
-          rubrik: "Skor 4: Algoritma valid, pseudocode lengkap, penanganan input negatif diuraikan jelas.\nSkor 3: Algoritma tepat namun penanganan input negatif kurang detail.\nSkor 2: Logika bercabang belum mencakup kondisi member card.\nSkor 1: Menuliskan ide dasar tanpa struktur pseudocode."
-        })
-      }
-    ];
-
-    // DOM Element References
+    /* =========================================================
+       2. DOM REFERENCES
+       ========================================================= */
     const selectJenjang = document.getElementById("select-jenjang");
     const selectKelas = document.getElementById("select-kelas");
     const inputFase = document.getElementById("input-fase");
@@ -683,7 +613,7 @@
     const inputGuru = document.getElementById("input-guru");
     const inputMapel = document.getElementById("input-mapel");
     const inputMateri = document.getElementById("input-materi");
-    const selectJumlah = document.getElementById("select-jumlah");
+    const badgeTotalSoal = document.getElementById("badge-total-soal");
 
     const kopNamaSekolah = document.getElementById("kop-nama-sekolah");
     const metaMapel = document.getElementById("meta-mapel");
@@ -693,23 +623,14 @@
     const tbodyKisi = document.getElementById("tbody-kisi");
     const containerLembarSoal = document.getElementById("container-lembar-soal");
     const containerKunciRubrik = document.getElementById("container-kunci-rubrik");
-
-    // Inisialisasi Opsi Dropdown 1 - 25 Soal
-    function initDropdownJumlahSoal() {
-      selectJumlah.innerHTML = "";
-      for (let i = 1; i <= 25; i++) {
-        const opt = document.createElement("option");
-        opt.value = i;
-        opt.textContent = `${i} Soal`;
-        if (i === 10) opt.selected = true; // Default 10 Soal
-        selectJumlah.appendChild(opt);
-      }
-    }
-
-    // Modal & Toast elements
     const toastContainer = document.getElementById("toast-container");
-    const modalPrompt = document.getElementById("modal-prompt");
-    const modalPromptContent = document.getElementById("modal-prompt-content");
+
+    const tabBtnKisi = document.getElementById("tab-btn-kisi");
+    const tabBtnSoal = document.getElementById("tab-btn-soal");
+    const tabBtnKunci = document.getElementById("tab-btn-kunci");
+    const tabContentKisi = document.getElementById("tab-content-kisi");
+    const tabContentSoal = document.getElementById("tab-content-soal");
+    const tabContentKunci = document.getElementById("tab-content-kunci");
 
     function showToast(message, type = "info") {
       const toast = document.createElement("div");
@@ -725,23 +646,73 @@
 
       toastContainer.appendChild(toast);
       
-      // Animate in
       requestAnimationFrame(() => {
         toast.classList.remove("translate-y-2", "opacity-0");
       });
 
-      // Auto dismiss after 3.5 seconds
       setTimeout(() => {
         toast.classList.add("opacity-0", "translate-y-2");
         setTimeout(() => toast.remove(), 300);
       }, 3500);
     }
 
+    function initBentukSoalControls() {
+      const selects = document.querySelectorAll(".select-count-bentuk");
+      selects.forEach(sel => {
+        const type = sel.dataset.type;
+        const defaultVal = DEFAULT_TYPE_COUNTS[type] || 1;
+        sel.innerHTML = "";
+        for (let i = 1; i <= 25; i++) {
+          const opt = document.createElement("option");
+          opt.value = i;
+          opt.textContent = `${i} butir`;
+          if (i === defaultVal) opt.selected = true;
+          sel.appendChild(opt);
+        }
+
+        sel.addEventListener("change", updateTotalSoalCount);
+      });
+
+      const checkboxes = document.querySelectorAll(".checkbox-bentuk");
+      checkboxes.forEach(cb => {
+        cb.addEventListener("change", (e) => {
+          const type = e.target.dataset.type;
+          const targetSelect = document.querySelector(`.select-count-bentuk[data-type="${type}"]`);
+          if (targetSelect) {
+            targetSelect.disabled = !e.target.checked;
+          }
+          updateTotalSoalCount();
+        });
+      });
+
+      updateTotalSoalCount();
+    }
+
+    function updateTotalSoalCount() {
+      const activeConfigs = getQuestionTypeConfigurations();
+      const total = activeConfigs.reduce((acc, cur) => acc + cur.count, 0);
+      if (badgeTotalSoal) {
+        badgeTotalSoal.textContent = total;
+      }
+      return total;
+    }
+
+    function getQuestionTypeConfigurations() {
+      const configs = [];
+      const checkboxes = document.querySelectorAll(".checkbox-bentuk:checked");
+      checkboxes.forEach(cb => {
+        const type = cb.dataset.type;
+        const select = document.querySelector(`.select-count-bentuk[data-type="${type}"]`);
+        const count = select ? (parseInt(select.value, 10) || 1) : 1;
+        configs.push({ type, count });
+      });
+      return configs;
+    }
+
     function updateDropdownKelas() {
       const selectedJenjang = selectJenjang.value;
       const kelasList = JENJANG_KELAS_MAP[selectedJenjang] || [];
 
-      // Save previous selection if compatible
       const prevKelas = selectKelas.value;
       selectKelas.innerHTML = "";
 
@@ -764,8 +735,6 @@
       const kelas = selectKelas.value;
       const fase = getFaseFromJenjangKelas(jenjang, kelas);
       inputFase.value = fase;
-
-      // Update preview metadata
       updatePreviewHeader();
     }
 
@@ -774,32 +743,6 @@
       metaMapel.textContent = inputMapel.value || "Mata Pelajaran";
       metaJenjangKelas.textContent = `${selectJenjang.value} / ${selectKelas.value} (${inputFase.value})`;
       metaGuru.textContent = inputGuru.value.trim() !== "" ? inputGuru.value : "[NAMA GURU PENGAMPU]";
-    }
-
-    // Toggle custom distribution fields
-    document.querySelectorAll(".radio-preset").forEach(radio => {
-      radio.addEventListener("change", (e) => {
-        const containerCustom = document.getElementById("container-custom-dist");
-        if (e.target.value === "custom") {
-          containerCustom.classList.remove("hidden");
-        } else {
-          containerCustom.classList.add("hidden");
-        }
-      });
-    });
-
-    // Input listeners for real-time header sync
-    [inputSekolah, inputGuru, inputMapel].forEach(input => {
-      input.addEventListener("input", updatePreviewHeader);
-    });
-
-    selectJenjang.addEventListener("change", updateDropdownKelas);
-    selectKelas.addEventListener("change", updateFaseOtomatis);
-
-    function getSelectedQuestionTypes() {
-      const checkedBoxes = Array.from(document.querySelectorAll(".checkbox-tipe:checked"));
-      const types = checkedBoxes.map(cb => cb.value);
-      return types.length > 0 ? types : ["Pilihan Ganda"];
     }
 
     function calculateCognitiveDistribution(total) {
@@ -814,7 +757,7 @@
         pLots = parseInt(document.getElementById("custom-lots").value) || 30;
         pMots = parseInt(document.getElementById("custom-mots").value) || 40;
         pHots = parseInt(document.getElementById("custom-hots").value) || 30;
-        const totalP = pLots + pMots + pHots;
+        const totalP = Math.max(1, pLots + pMots + pHots);
         pLots = Math.round((pLots / totalP) * 100);
         pMots = Math.round((pMots / totalP) * 100);
         pHots = 100 - pLots - pMots;
@@ -828,88 +771,356 @@
       return { countLots, countMots, countHots };
     }
 
-    function generateSoalEngine() {
-      const totalSoal = parseInt(selectJumlah.value) || 10;
-      const allowedTypes = getSelectedQuestionTypes();
+    function extractSubtopicsFromText(text) {
+      if (!text || text.trim() === "") return ["Konsep Dasar", "Implementasi Praktis", "Analisis Kasus"];
+      const rawParts = text.split(/[\n,;\.\-\(\)]+/).map(s => s.trim()).filter(s => s.length > 3);
+      if (rawParts.length >= 2) {
+        return rawParts;
+      }
+      return [text.trim()];
+    }
+
+    function generateSmartLocalQuestions(mapel, topik, typeConfigs, dist, fase) {
+      const subtopics = extractSubtopicsFromText(topik);
+      const items = [];
+      const cognitivePool = [];
+
+      for (let i = 0; i < dist.countLots; i++) cognitivePool.push({ label: "C2 (Memahami)", class: "bg-emerald-50 text-emerald-700 border-emerald-200" });
+      for (let i = 0; i < dist.countMots; i++) cognitivePool.push({ label: "C3 (Mengaplikasikan)", class: "bg-amber-50 text-amber-700 border-amber-200" });
+      for (let i = 0; i < dist.countHots; i++) cognitivePool.push({ label: "C4/C5 (Menganalisis/Mengevaluasi)", class: "bg-rose-50 text-rose-700 border-rose-200" });
+
+      const angleStyles = [
+        "Kasus Riil di Lingkungan Kerja/Sekolah",
+        "Analisis Data dan Tabel Perbandingan",
+        "Troubleshooting / Pemecahan Masalah",
+        "Kajian Kritis Prinsip & Konsep Kunci",
+        "Eksperimen / Simulasi Prosedural"
+      ];
+
+      let itemNumber = 1;
+
+      typeConfigs.forEach((cfg) => {
+        for (let k = 0; k < cfg.count; k++) {
+          const sub = subtopics[(itemNumber - 1) % subtopics.length];
+          const cog = cognitivePool[(itemNumber - 1) % cognitivePool.length] || { label: "C3 (Mengaplikasikan)", class: "bg-amber-50 text-amber-700 border-amber-200" };
+          const angle = angleStyles[(itemNumber - 1) % angleStyles.length];
+          const type = cfg.type;
+
+          if (type === "Pilihan Ganda") {
+            items.push({
+              no: itemNumber,
+              type: "Pilihan Ganda",
+              cognitive: cog.label,
+              badgeClass: cog.class,
+              bobot: 1,
+              indicator: `Peserta didik mampu menelaah penerapan "${sub}" melalui perspektif ${angle.toLowerCase()}.`,
+              stimulus: `Studi Kasus Kontekstual (${mapel}): Dalam implementasi konsep "${sub}", seorang praktisi dihadapkan pada situasi di mana efisiensi dan kepatuhan prinsip dasar harus diutamakan.`,
+              question: `Berdasarkan uraian materi "${sub}" di atas, manakah tindakan atau simpulan yang paling tepat dan selaras dengan kaidah ${mapel}?`,
+              options: [
+                `A. Melakukan identifikasi terstruktur pada elemen ${sub} untuk memastikan seluruh parameter memenuhi standar operasional.`,
+                `B. Menghapus proses validasi pada ${sub} agar durasi pengerjaan dapat diselesaikan lebih cepat tanpa pengawasan.`,
+                `C. Mengabaikan aturan dasar materi karena dianggap tidak berpengaruh langsung terhadap hasil akhir pengujian.`,
+                `D. Mengganti seluruh struktur konsep yang telah baku dengan metode yang belum teruji keakuratannya.`,
+                `E. Menyerahkan keputusan sepenuhnya kepada pihak ketiga tanpa melakukan pencatatan atau telaah data faktual.`
+              ],
+              key: "A",
+              explanation: `Pilihan A tepat karena mencerminkan penerapan prinsip ilmiah pada sub-pokok "${sub}" yang mengedepankan prosedur terukur dan evaluasi komprehensif.`,
+              rubrik: "Skor 1: Memilih opsi A secara tepat. Skor 0: Memilih opsi selain A."
+            });
+          } else if (type === "PG Kompleks") {
+            items.push({
+              no: itemNumber,
+              type: "PG Kompleks",
+              cognitive: cog.label,
+              badgeClass: cog.class,
+              bobot: 2,
+              indicator: `Peserta didik mampu menganalisis multi-faktor keberhasilan pada materi "${sub}".`,
+              stimulus: `Tinjauan Kritis: Evaluasi mendalam terhadap penerapan ${sub} menunjukkan beberapa faktor penentu yang saling memengaruhi efektivitas hasil.`,
+              question: `Pilihlah DUA (2) pernyataan yang BENAR terkait penguasaan sub-materi "${sub}"!`,
+              options: [
+                `[ ] Pernyataan 1: Pemahaman menyeluruh terhadap kaidah "${sub}" memperkecil risiko kesalahan fatal dalam proses pengerjaan.`,
+                `[ ] Pernyataan 2: Setiap komponen dalam "${sub}" berdiri sendiri tanpa memerlukan keterkaitan dengan logika pokok ${mapel}.`,
+                `[ ] Pernyataan 3: Integrasi antara teori dan praktik pada "${sub}" memperkuat daya nalar kritis serta pemecahan masalah kontekstual.`,
+                `[ ] Pernyataan 4: Langkah kerja pada sub-materi ini bersifat opsional dan tidak perlu dievaluasi secara berkala.`
+              ],
+              key: "Pernyataan 1 dan Pernyataan 3",
+              explanation: `Pernyataan 1 dan 3 benar karena memperlihatkan pentingnya keselarasan teoritis dan praktis dalam materi ${sub}.`,
+              rubrik: "Skor 2 jika memilih pernyataan 1 dan 3; Skor 1 jika hanya memilih salah satu; Skor 0 jika keliru semua."
+            });
+          } else if (type === "Menjodohkan") {
+            items.push({
+              no: itemNumber,
+              type: "Menjodohkan",
+              cognitive: cog.label,
+              badgeClass: cog.class,
+              bobot: 3,
+              indicator: `Peserta didik mampu menghubungkan konsep komponen pada "${sub}" dengan peran operasionalnya.`,
+              stimulus: `Pasangkanlah istilah penting pada materi "${sub}" di Kolom Kiri dengan deskripsi fungsinya di Kolom Kanan:`,
+              pairs: [
+                { left: `1. Prinsip Utama ${sub}`, right: `A. Menjadi pedoman dasar operasional dalam pemecahan masalah` },
+                { left: `2. Tahap Validasi Data`, right: `B. Memastikan keabsahan informasi dan parameter sebelum eksekusi` },
+                { left: `3. Evaluasi Kinerja`, right: `C. Mengukur ketercapaian target dan efisiensi luaran kerja` }
+              ],
+              key: "1 -> A, 2 -> B, 3 -> C",
+              explanation: "Setiap pasangan telah disesuaikan dengan alur kerja baku penguasaan kompetensi materi terkait.",
+              rubrik: "Skor 3: Seluruh pasangan tepat. Skor 2: Dua pasangan tepat. Skor 1: Satu pasangan tepat."
+            });
+          } else if (type === "Benar/Salah") {
+            items.push({
+              no: itemNumber,
+              type: "Benar/Salah",
+              cognitive: cog.label,
+              badgeClass: cog.class,
+              bobot: 1,
+              indicator: `Peserta didik mampu memvalidasi keabsahan pernyataan ilmiah seputar "${sub}".`,
+              stimulus: `Ditinjau dari kaidah ${mapel}, dikemukakan pernyataan: "Penerapan konsep ${sub} secara sistematis selalu memerlukan perencanaan matang dan evaluasi hasil agar dampak penyimpangan dapat diminimalisasi sedini mungkin."`,
+              question: `Apakah proposisi pernyataan di atas BENAR atau SALAH?`,
+              key: "BENAR",
+              explanation: `Pernyataan tersebut bernilai BENAR karena fondasi utama ${sub} bertumpu pada kontrol proses dan mitigasi kegagalan.`,
+              rubrik: "Skor 1: Jawaban BENAR. Skor 0: Jawaban SALAH."
+            });
+          } else if (type === "Uraian Singkat") {
+            items.push({
+              no: itemNumber,
+              type: "Uraian Singkat",
+              cognitive: cog.label,
+              badgeClass: cog.class,
+              bobot: 2,
+              indicator: `Peserta didik mampu menyebutkan keluaran atau istilah kunci terkait ${sub}.`,
+              stimulus: `Dalam siklus penerapan ${mapel}, terdapat tahapan krusial pada bahasan ${sub} yang berfokus pada kontrol kualitas instruksi.`,
+              question: `Sebutkan istilah spesifik dari tahapan verifikasi awal tersebut dan jelaskan fungsinya dalam satu kalimat!`,
+              key: `Verifikasi / Validasi Awal (${sub})`,
+              explanation: `Jawaban mencakup penyebutan terminologi kontrol kualitas atau validasi awal beserta deskripsi singkatnya.`,
+              rubrik: "Skor 2 jika menyebutkan istilah dan penjelasan singkat tepat; Skor 1 jika hanya istilah."
+            });
+          } else {
+            items.push({
+              no: itemNumber,
+              type: "Uraian Panjang",
+              cognitive: cog.label,
+              badgeClass: cog.class,
+              bobot: 4,
+              indicator: `Peserta didik mampu merumuskan solusi inovatif serta mengevaluasi penerapan "${sub}" pada studi kasus kompleks.`,
+              stimulus: `Studi Kasus Otentik: Suatu tim kerja menghadapi kegagalan operasional yang berakar pada ketidaksesuaian pelaksanaan materi "${sub}". Data menunjukkan adanya inkonsistensi prosedur dan minimnya pencatatan.`,
+              question: `Analisis penyebab masalah tersebut berdasarkan kaidah ${sub}! Rumuskan rencana langkah perbaikan terstruktur (minimal 3 langkah) agar kendala serupa tidak terulang!`,
+              key: `Analisis akar masalah pada ${sub}, disertai 3 langkah solutif: 1) Standardisasi SOP, 2) Monitoring proses, 3) Uji verifikasi akhir.`,
+              explanation: `Peserta didik dituntut menunjukkan kemampuan C4/C5 dalam mengurai disfungsi sistem dan menyusun rekomendasi perbaikan.`,
+              rubrik: "Skor 4: Analisis kritis dan 3 langkah perbaikan terstruktur logis.\nSkor 3: Analisis baik namun usulan langkah kurang konkret.\nSkor 2: Hanya saran umum tanpa analisis mendalam.\nSkor 1: Gagasan belum sistematis."
+            });
+          }
+
+          itemNumber++;
+        }
+      });
+
+      return items;
+    }
+
+    async function fetchGeminiQuestions(mapel, topik, typeConfigs, totalSoal, dist, fase, jenjang, kelas) {
+      const apiKey = "";
+      const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+
+      const typeBreakdownPrompt = typeConfigs.map(c => `- ${c.type}: ${c.count} butir soal`).join("\n");
+
+      const systemPrompt = `Anda adalah Pakar Penilaian dan Asesmen Pendidikan Kurikulum Merdeka Indonesia (Kemendikbudristek).
+Tugas Anda adalah membedah secara mendalam materi dari guru, lalu menyusun soal asesmen yang SANGAT BERVARIASI, MENDALAM, dan OTENTIK.
+Setiap butir soal HARUS berfokus pada sub-konsep, fakta, atau studi kasus yang berbeda dari teks materi yang diberikan.
+DILARANG membuat pertanyaan yang repetitif atau menggunakan pola template yang sama.
+SANGAT PENTING: Anda WAJIB membuat butir soal dengan JUMLAH dan BENTUK SOAL yang PERSIS sesuai rincian berikut:
+${typeBreakdownPrompt}
+TOTAL KESELURUHAN SOAL: ${totalSoal} butir.
+
+Ketentuan:
+1. Pilihan Ganda (PG) memiliki 5 pilihan lengkap (A, B, C, D, E).
+2. Setiap butir memiliki stimulus wacana kontekstual/studi kasus yang bermakna.
+3. Distribusi level kognitif sesuai Taksonomi Bloom (LOTS/MOTS/HOTS).
+4. Sediakan kunci jawaban terperinci, pembahasan langkah demi langkah, dan rubrik penskoran.
+5. Bahasa Indonesia baku dan ilmiah sesuai jenjang ${jenjang} (${kelas} / ${fase}).`;
+
+      const userPrompt = `Tolong susun ${totalSoal} butir soal asesmen untuk:
+- Mata Pelajaran: ${mapel}
+- Jenjang/Kelas/Fase: ${jenjang} / ${kelas} / ${fase}
+- Uraian Materi/CP/TP:
+"""
+${topik}
+"""
+
+KOMPOSISI BENTUK SOAL YANG WAJIB DIIKUTI:
+${typeBreakdownPrompt}
+Total: ${totalSoal} butir soal.
+
+Target Distribusi Kognitif:
+* LOTS (C1-C2): ~${dist.countLots} butir
+* MOTS (C3): ~${dist.countMots} butir
+* HOTS (C4-C6): ~${dist.countHots} butir
+
+Seluruh output WAJIB dalam format array JSON terstruktur persis sesuai skema yang diminta.`;
+
+      const payload = {
+        contents: [{ role: "user", parts: [{ text: userPrompt }] }],
+        systemInstruction: { parts: [{ text: systemPrompt }] },
+        generationConfig: {
+          responseMimeType: "application/json",
+          responseSchema: {
+            type: "ARRAY",
+            items: {
+              type: "OBJECT",
+              properties: {
+                no: { type: "INTEGER" },
+                type: { type: "STRING" },
+                cognitive: { type: "STRING" },
+                indicator: { type: "STRING" },
+                stimulus: { type: "STRING" },
+                question: { type: "STRING" },
+                options: {
+                  type: "ARRAY",
+                  items: { type: "STRING" }
+                },
+                pairs: {
+                  type: "ARRAY",
+                  items: {
+                    type: "OBJECT",
+                    properties: {
+                      left: { type: "STRING" },
+                      right: { type: "STRING" }
+                    }
+                  }
+                },
+                key: { type: "STRING" },
+                explanation: { type: "STRING" },
+                rubrik: { type: "STRING" },
+                bobot: { type: "INTEGER" }
+              },
+              required: ["no", "type", "cognitive", "indicator", "question", "key", "explanation", "rubrik", "bobot"]
+            }
+          }
+        }
+      };
+
+      let delays = [1000, 2000, 4000];
+      for (let attempt = 0; attempt <= delays.length; attempt++) {
+        try {
+          const response = await fetch(apiUrl, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+          });
+
+          if (!response.ok) {
+            throw new Error(`HTTP Error: ${response.status} ${response.statusText}`);
+          }
+
+          const data = await response.json();
+          const rawText = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+          if (rawText) {
+            const parsed = JSON.parse(rawText);
+            if (Array.isArray(parsed) && parsed.length > 0) {
+              return parsed;
+            }
+          }
+        } catch (err) {
+          if (attempt < delays.length) {
+            await new Promise(r => setTimeout(r, delays[attempt]));
+          }
+        }
+      }
+
+      return null;
+    }
+
+    async function generateSoalEngine() {
+      const btnMain = document.getElementById("btn-generate-main");
+      const iconGenerate = document.getElementById("icon-generate");
+      const labelGenerate = document.getElementById("label-generate");
+
+      const typeConfigs = getQuestionTypeConfigurations();
+      const totalSoal = typeConfigs.reduce((sum, item) => sum + item.count, 0);
+
+      if (typeConfigs.length === 0 || totalSoal === 0) {
+        showToast("Pilihlah minimal satu bentuk soal dengan jumlah minimal 1!", "warning");
+        return;
+      }
+
       const mapel = inputMapel.value || "Mata Pelajaran";
       const topik = inputMateri.value || "Topik Pembelajaran";
       const fase = inputFase.value;
+      const jenjang = selectJenjang.value;
+      const kelas = selectKelas.value;
+      const dist = calculateCognitiveDistribution(totalSoal);
 
       updatePreviewHeader();
 
-      // Clear previous outputs
+      btnMain.disabled = true;
+      iconGenerate.className = "fa-solid fa-spinner fa-spin mr-2";
+      labelGenerate.textContent = "Menyusun Butir Soal Sesuai Komposisi...";
+
+      let generatedItems = null;
+
+      try {
+        generatedItems = await fetchGeminiQuestions(mapel, topik, typeConfigs, totalSoal, dist, fase, jenjang, kelas);
+      } catch (e) {
+        console.warn("Gemini call error:", e);
+      }
+
+      if (!generatedItems || generatedItems.length === 0) {
+        generatedItems = generateSmartLocalQuestions(mapel, topik, typeConfigs, dist, fase);
+      }
+
+      btnMain.disabled = false;
+      iconGenerate.className = "fa-solid fa-wand-magic-sparkles mr-2";
+      labelGenerate.textContent = "Yuk Generate Hasil Soalnya";
+
       tbodyKisi.innerHTML = "";
       containerLembarSoal.innerHTML = "";
       containerKunciRubrik.innerHTML = "";
 
-      // Filter compatible template questions
-      let availableTemplates = MOCK_QUESTION_TEMPLATES.filter(t => allowedTypes.includes(t.type));
-      if (availableTemplates.length === 0) {
-        availableTemplates = MOCK_QUESTION_TEMPLATES;
-      }
+      generatedItems.forEach((item, index) => {
+        const itemNo = item.no || (index + 1);
+        const itemBobot = item.bobot || 1;
+        const cog = item.cognitive || "C3";
+        let badgeClass = "bg-amber-50 text-amber-700 border-amber-200";
+        if (cog.includes("C1") || cog.includes("C2")) badgeClass = "bg-emerald-50 text-emerald-700 border-emerald-200";
+        if (cog.includes("C4") || cog.includes("C5") || cog.includes("C6")) badgeClass = "bg-rose-50 text-rose-700 border-rose-200";
 
-      const generatedItems = [];
-
-      for (let i = 1; i <= totalSoal; i++) {
-        // Pick template matching type in round-robin fashion
-        const tpl = availableTemplates[(i - 1) % availableTemplates.length];
-        const qData = tpl.getQ(mapel, topik);
-        
-        let bobotSkor = 1;
-        if (tpl.type === "PG Kompleks") bobotSkor = 2;
-        if (tpl.type === "Menjodohkan") bobotSkor = 3;
-        if (tpl.type === "Uraian Singkat") bobotSkor = 2;
-        if (tpl.type === "Uraian Panjang") bobotSkor = 4;
-
-        generatedItems.push({
-          no: i,
-          type: tpl.type,
-          cognitive: tpl.cognitive,
-          badgeClass: tpl.badgeClass,
-          bobot: bobotSkor,
-          ...qData
-        });
-      }
-
-      generatedItems.forEach((item) => {
-        // Render Baris Kisi-kisi
+        // 1. Render Baris Kisi-kisi
         const tr = document.createElement("tr");
         tr.className = "hover:bg-slate-50 transition-colors";
         tr.innerHTML = `
-          <td class="p-2.5 border-b border-r border-slate-200 text-center font-bold text-slate-700">${item.no}</td>
+          <td class="p-2.5 border-b border-r border-slate-200 text-center font-bold text-slate-700">${itemNo}</td>
           <td class="p-2.5 border-b border-r border-slate-200 text-slate-800">
-            <div class="font-medium">${item.indicator}</div>
+            <div class="font-medium">${item.indicator || `Menguji penguasaan materi ${mapel}`}</div>
             <div class="text-[10px] text-slate-400 mt-0.5">${fase} • Materi: ${topik.substring(0, 45)}...</div>
           </td>
           <td class="p-2.5 border-b border-r border-slate-200 text-center">
             <span class="inline-block px-2 py-0.5 rounded text-[10px] font-semibold bg-slate-100 text-slate-700 border border-slate-200">${item.type}</span>
           </td>
           <td class="p-2.5 border-b border-r border-slate-200 text-center">
-            <span class="inline-block px-2 py-0.5 rounded text-[10px] font-bold border ${item.badgeClass}">${item.cognitive}</span>
+            <span class="inline-block px-2 py-0.5 rounded text-[10px] font-bold border ${badgeClass}">${cog}</span>
           </td>
-          <td class="p-2.5 border-b border-slate-200 text-center font-bold text-slate-700">${item.bobot}</td>
+          <td class="p-2.5 border-b border-slate-200 text-center font-bold text-slate-700">${itemBobot}</td>
         `;
         tbodyKisi.appendChild(tr);
 
+        // 2. Render Lembar Soal Siswa
         const qCard = document.createElement("div");
-        qCard.className = "p-4 bg-slate-50 rounded-xl border border-slate-200 break-inside-avoid";
+        qCard.className = "p-4 bg-slate-50 rounded-xl border border-slate-200 break-inside-avoid shadow-xs";
         
         let choicesHtml = "";
-        if (item.options) {
+        if (item.options && item.options.length > 0) {
           choicesHtml = `
-            <div class="mt-2.5 space-y-1.5 pl-2 text-xs text-slate-700">
-              ${item.options.map(opt => `<div class="p-1.5 rounded hover:bg-white transition-colors">${opt}</div>`).join("")}
+            <div class="mt-3 space-y-1.5 pl-2 text-xs text-slate-700">
+              ${item.options.map(opt => `<div class="p-1.5 rounded hover:bg-white transition-colors bg-white/70 border border-slate-100">${opt}</div>`).join("")}
             </div>
           `;
-        } else if (item.pairs) {
+        } else if (item.pairs && item.pairs.length > 0) {
           choicesHtml = `
             <div class="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
               <div class="bg-white p-3 rounded-lg border border-slate-200 space-y-2">
-                <span class="font-bold text-slate-800 block border-b pb-1 text-[11px]">KOLOM PERNYATAAN:</span>
+                <span class="font-bold text-slate-800 block border-b pb-1 text-[11px]">KOLOM PERNYATAAN / PREMIS:</span>
                 ${item.pairs.map(p => `<div>${p.left}</div>`).join("")}
               </div>
               <div class="bg-white p-3 rounded-lg border border-slate-200 space-y-2">
-                <span class="font-bold text-slate-800 block border-b pb-1 text-[11px]">KOLOM PILIHAN JAWABAN:</span>
+                <span class="font-bold text-slate-800 block border-b pb-1 text-[11px]">KOLOM PILIHAN / JAWABAN:</span>
                 ${item.pairs.map(p => `<div>${p.right}</div>`).join("")}
               </div>
             </div>
@@ -917,7 +1128,7 @@
         } else if (item.type.includes("Uraian")) {
           choicesHtml = `
             <div class="mt-3 p-3 bg-white border border-dashed border-slate-300 rounded-lg text-slate-400 text-xs italic">
-              [Area Lembar Jawaban Peserta Didik]
+              [Ruang Lembar Jawaban dan Uraian Peserta Didik]
             </div>
           `;
         }
@@ -925,14 +1136,14 @@
         qCard.innerHTML = `
           <div class="flex items-start justify-between">
             <div class="flex items-center space-x-2">
-              <span class="w-6 h-6 rounded-full bg-slate-900 text-white flex items-center justify-center font-bold text-xs">${item.no}</span>
+              <span class="w-6 h-6 rounded-full bg-slate-900 text-white flex items-center justify-center font-bold text-xs">${itemNo}</span>
               <span class="text-xs font-bold text-indigo-700">[${item.type}]</span>
-              <span class="text-[10px] text-slate-500 font-medium">Bobot: ${item.bobot} Poin</span>
+              <span class="text-[10px] text-slate-500 font-medium">Bobot: ${itemBobot} Poin</span>
             </div>
-            <span class="text-[10px] font-bold px-2 py-0.5 rounded border ${item.badgeClass}">${item.cognitive}</span>
+            <span class="text-[10px] font-bold px-2 py-0.5 rounded border ${badgeClass}">${cog}</span>
           </div>
 
-          ${item.stimulus ? `<div class="mt-2.5 text-xs text-slate-600 bg-white p-2.5 rounded-lg border border-slate-200 italic leading-relaxed"><i class="fa-solid fa-quote-left text-slate-300 mr-1.5"></i>${item.stimulus}</div>` : ''}
+          ${item.stimulus ? `<div class="mt-2.5 text-xs text-slate-600 bg-white p-3 rounded-lg border border-slate-200 italic leading-relaxed"><i class="fa-solid fa-quote-left text-slate-300 mr-1.5"></i>${item.stimulus}</div>` : ''}
 
           <p class="mt-2.5 text-xs font-semibold text-slate-900 leading-relaxed">${item.question}</p>
 
@@ -940,27 +1151,28 @@
         `;
         containerLembarSoal.appendChild(qCard);
 
+        // 3. Render Kunci Jawaban & Rubrik
         const kCard = document.createElement("div");
-        kCard.className = "p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-2 break-inside-avoid";
+        kCard.className = "p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-2 break-inside-avoid shadow-xs";
         kCard.innerHTML = `
           <div class="flex items-center justify-between border-b border-slate-200 pb-2">
             <div class="flex items-center space-x-2">
-              <span class="w-6 h-6 rounded-md bg-emerald-600 text-white flex items-center justify-center font-bold text-xs">K-${item.no}</span>
-              <span class="text-xs font-bold text-slate-800">Kunci Jawaban Soal No. ${item.no}</span>
+              <span class="w-6 h-6 rounded-md bg-emerald-600 text-white flex items-center justify-center font-bold text-xs">K-${itemNo}</span>
+              <span class="text-xs font-bold text-slate-800">Kunci Jawaban Soal No. ${itemNo}</span>
             </div>
-            <span class="text-xs font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded">Skor Maksimal: ${item.bobot}</span>
+            <span class="text-xs font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded">Skor Maksimal: ${itemBobot}</span>
           </div>
 
-          <div class="text-xs">
+          <div class="text-xs space-y-2">
             <div class="font-bold text-slate-800 flex items-center">
               <span class="w-20 text-slate-500">Kunci:</span>
               <span class="text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded font-mono font-bold">${item.key}</span>
             </div>
-            <div class="mt-2">
-              <span class="font-semibold text-slate-700 block mb-0.5">Pembahasan Analitis & Konsep:</span>
+            <div>
+              <span class="font-semibold text-slate-700 block mb-0.5">Pembahasan Analitis:</span>
               <p class="text-slate-600 leading-relaxed bg-white p-2.5 rounded-lg border border-slate-200">${item.explanation}</p>
             </div>
-            <div class="mt-2">
+            <div>
               <span class="font-semibold text-slate-700 block mb-0.5">Pedoman Penskoran / Rubrik:</span>
               <pre class="text-[11px] font-sans text-slate-600 bg-white p-2.5 rounded-lg border border-slate-200 whitespace-pre-wrap leading-relaxed">${item.rubrik}</pre>
             </div>
@@ -969,202 +1181,57 @@
         containerKunciRubrik.appendChild(kCard);
       });
 
-      showToast(`Berhasil men-generate ${totalSoal} butir soal simulasi!`, "success");
+      showToast(`Berhasil menyusun ${totalSoal} butir soal sesuai komposisi bentuk soal!`, "success");
     }
 
-    function buildPromptText() {
-      const sekolah = inputSekolah.value.trim() || "[Nama Satuan Pendidikan Belum Diisi]";
-      const guru = inputGuru.value.trim() || "[Nama Guru Pengajar Belum Diisi]";
-      const jenjang = selectJenjang.value;
-      const kelas = selectKelas.value;
-      const fase = inputFase.value;
-      const mapel = inputMapel.value || "Mata Pelajaran";
-      const materi = inputMateri.value || "Topik Materi";
-      const jumlah = selectJumlah.value;
-      const tipeSoal = getSelectedQuestionTypes().join(", ");
-      const dist = calculateCognitiveDistribution(parseInt(jumlah));
-
-      return `Tugas Anda adalah bertindak sebagai Pakar Asesmen Pendidikan dan Pengembang Kurikulum Merdeka di Indonesia.
-
-Buatlah perangkat asesmen lengkap berdasarkan parameter spesifik berikut:
-- Satuan Pendidikan: ${sekolah}
-- Nama Guru Penyusun: ${guru}
-- Jenjang Pendidikan: ${jenjang}
-- Tingkat / Kelas: ${kelas}
-- Fase Kurikulum Merdeka: ${fase}
-- Mata Pelajaran: ${mapel}
-- Topik / Capaian Pembelajaran (CP / TP): ${materi}
-- Jumlah Total Soal: ${jumlah} butir
-- Bentuk Soal: ${tipeSoal}
-- Pilihan Ganda: 5 pilihan opsi jawaban (A, B, C, D, E)
-- Distribusi Kognitif (Taksonomi Bloom):
-  * LOTS (C1-C2): ~${dist.countLots} soal
-  * MOTS (C3): ~${dist.countMots} soal
-  * HOTS (C4-C6): ~${dist.countHots} soal
-
-Keluaran dokumen HARUS mencakup 3 bagian terstruktur:
-1. TABEL KISI-KISI SOAL (No, Capaian/Indikator Soal, Bentuk Soal, Level Kognitif, Bobot Skor).
-2. LEMBAR SOAL LENGKAP DENGAN STIMULUS (Wacana kontekstual / studi kasus / data tabel sebelum pertanyaan).
-3. KUNCI JAWABAN, PEMBAHASAN STEP-BY-STEP, SERTA RUBRIK PENSKORAN DETAIL.
-
-Gunakan bahasa Indonesia baku yang edukatif, ilmiah, dan sesuai dengan karakteristik usia peserta didik ${fase}.`;
-    }
-
-    function copyToClipboard(text) {
-      // Fallback safe for iframes using textarea and execCommand
-      const dummyArea = document.createElement("textarea");
-      dummyArea.value = text;
-      dummyArea.style.position = "fixed";
-      dummyArea.style.left = "-9999px";
-      dummyArea.style.top = "0";
-      document.body.appendChild(dummyArea);
-      dummyArea.focus();
-      dummyArea.select();
-      
-      try {
-        const successful = document.execCommand("copy");
-        if (successful) {
-          showToast("Prompt ringkasan berhasil disalin ke clipboard!", "success");
-        } else {
-          showToast("Gagal menyalin otomatis, silakan salin manual.", "warning");
-        }
-      } catch (err) {
-        showToast("Izin clipboard dibatasi oleh browser.", "warning");
-      }
-      document.body.removeChild(dummyArea);
-    }
-
-    const tabBtnKisi = document.getElementById("tab-btn-kisi");
-    const tabBtnSoal = document.getElementById("tab-btn-soal");
-    const tabBtnKunci = document.getElementById("tab-btn-kunci");
-
-    const tabContentKisi = document.getElementById("tab-content-kisi");
-    const tabContentSoal = document.getElementById("tab-content-soal");
-    const tabContentKunci = document.getElementById("tab-content-kunci");
-
-    function setActiveTab(tab) {
-      // Reset all buttons
+    function switchTab(tabId) {
       [tabBtnKisi, tabBtnSoal, tabBtnKunci].forEach(btn => {
         btn.classList.remove("active", "border-indigo-600", "text-indigo-600");
         btn.classList.add("border-transparent", "text-slate-500");
       });
+      [tabContentKisi, tabContentSoal, tabContentKunci].forEach(pane => pane.classList.add("hidden"));
 
-      // Hide all panels
-      tabContentKisi.classList.add("hidden");
-      tabContentSoal.classList.add("hidden");
-      tabContentKunci.classList.add("hidden");
-
-      if (tab === "kisi") {
+      if (tabId === "kisi") {
         tabBtnKisi.classList.add("active", "border-indigo-600", "text-indigo-600");
+        tabBtnKisi.classList.remove("border-transparent", "text-slate-500");
         tabContentKisi.classList.remove("hidden");
-      } else if (tab === "soal") {
+      } else if (tabId === "soal") {
         tabBtnSoal.classList.add("active", "border-indigo-600", "text-indigo-600");
+        tabBtnSoal.classList.remove("border-transparent", "text-slate-500");
         tabContentSoal.classList.remove("hidden");
-      } else if (tab === "kunci") {
+      } else if (tabId === "kunci") {
         tabBtnKunci.classList.add("active", "border-indigo-600", "text-indigo-600");
+        tabBtnKunci.classList.remove("border-transparent", "text-slate-500");
         tabContentKunci.classList.remove("hidden");
       }
     }
 
-    tabBtnKisi.addEventListener("click", () => setActiveTab("kisi"));
-    tabBtnSoal.addEventListener("click", () => setActiveTab("soal"));
-    tabBtnKunci.addEventListener("click", () => setActiveTab("kunci"));
+    tabBtnKisi.addEventListener("click", () => switchTab("kisi"));
+    tabBtnSoal.addEventListener("click", () => switchTab("soal"));
+    tabBtnKunci.addEventListener("click", () => switchTab("kunci"));
 
-    // Unduh Dokumen Word (.doc MIME format yang didukung penuh oleh MS Word)
-    function exportWordDocument() {
-      const sekolah = inputSekolah.value || "Sekolah";
-      const mapel = inputMapel.value || "Mata Pelajaran";
-      const printClone = document.getElementById("print-area").cloneNode(true);
-
-      // Make all tab sections visible inside export file
-      printClone.querySelectorAll(".tab-pane").forEach(pane => {
-        pane.classList.remove("hidden");
-        pane.style.display = "block";
-        pane.style.marginBottom = "30px";
+    // Preset radio buttons change
+    document.querySelectorAll(".radio-preset").forEach(radio => {
+      radio.addEventListener("change", (e) => {
+        const containerCustom = document.getElementById("container-custom-dist");
+        if (e.target.value === "custom") {
+          containerCustom.classList.remove("hidden");
+        } else {
+          containerCustom.classList.add("hidden");
+        }
       });
-
-      const htmlContent = `
-        <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
-        <head>
-          <meta charset='utf-8'>
-          <title>${sekolah} - ${mapel}</title>
-          <style>
-            body { font-family: 'Calibri', 'Arial', sans-serif; font-size: 11pt; line-height: 1.4; }
-            table { border-collapse: collapse; width: 100%; margin-top: 10px; }
-            th, td { border: 1px solid #333; padding: 6px; font-size: 10pt; }
-            th { background-color: #f2f2f2; }
-            .header-kop { text-align: center; border-bottom: 2px solid #000; padding-bottom: 8px; margin-bottom: 15px; }
-            .badge { font-weight: bold; }
-          </style>
-        </head>
-        <body>
-          ${printClone.innerHTML}
-        </body>
-        </html>
-      `;
-
-      const blob = new Blob(['\ufeff' + htmlContent], {
-        type: 'application/msword'
-      });
-
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = url;
-      const sanitizedFilename = `Asesmen_${mapel.replace(/[^a-zA-Z0-9]/g, "_")}_${new Date().toISOString().slice(0, 10)}.doc`;
-      link.download = sanitizedFilename;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      URL.revokeObjectURL(url);
-
-      showToast("Dokumen Word (.doc) berhasil diunduh!", "success");
-    }
-
-    // Ekspor Cetak / PDF via window.print()
-    function exportPdfDocument() {
-      // Temporarily reveal all tabs in print area so complete dossier is printed
-      tabContentKisi.classList.remove("hidden");
-      tabContentSoal.classList.remove("hidden");
-      tabContentKunci.classList.remove("hidden");
-
-      // Trigger print dialog
-      window.print();
-
-      // Restore active tab after dialog closes
-      setTimeout(() => {
-        const activeBtn = document.querySelector(".tab-btn.active");
-        if (activeBtn === tabBtnKisi) setActiveTab("kisi");
-        else if (activeBtn === tabBtnSoal) setActiveTab("soal");
-        else if (activeBtn === tabBtnKunci) setActiveTab("kunci");
-      }, 500);
-    }
-
-    document.getElementById("btn-generate-main").addEventListener("click", () => {
-      generateSoalEngine();
     });
 
-    document.getElementById("btn-copy-prompt").addEventListener("click", () => {
-      const promptText = buildPromptText();
-      modalPromptContent.textContent = promptText;
-      modalPrompt.classList.remove("hidden");
+    // Real-time metadata listeners
+    [inputSekolah, inputGuru, inputMapel].forEach(input => {
+      input.addEventListener("input", updatePreviewHeader);
     });
 
-    document.getElementById("btn-copy-modal-prompt").addEventListener("click", () => {
-      const promptText = modalPromptContent.textContent;
-      copyToClipboard(promptText);
-      modalPrompt.classList.add("hidden");
-    });
+    selectJenjang.addEventListener("change", updateDropdownKelas);
+    selectKelas.addEventListener("change", updateFaseOtomatis);
 
-    document.getElementById("btn-close-modal").addEventListener("click", () => {
-      modalPrompt.classList.add("hidden");
-    });
-
-    modalPrompt.addEventListener("click", (e) => {
-      if (e.target === modalPrompt) modalPrompt.classList.add("hidden");
-    });
-
-    document.getElementById("btn-export-word").addEventListener("click", exportWordDocument);
-    document.getElementById("btn-export-pdf").addEventListener("click", exportPdfDocument);
+    // Main generate button listener
+    document.getElementById("btn-generate-main").addEventListener("click", generateSoalEngine);
 
     // Quick Sample Loader
     document.getElementById("btn-quick-sample").addEventListener("click", () => {
@@ -1176,7 +1243,20 @@ Gunakan bahasa Indonesia baku yang edukatif, ilmiah, dan sesuai dengan karakteri
       updateFaseOtomatis();
       inputMapel.value = "Biologi Molekuler & Genetika";
       inputMateri.value = "Substansi Genetika (DNA & RNA), Sintesis Protein (Transkripsi & Translasi), serta Rekayasa Genetika Modern.";
-      selectJumlah.value = "10";
+      
+      const pgSelect = document.getElementById("count-pg");
+      const pgkSelect = document.getElementById("count-pgk");
+      const jodohSelect = document.getElementById("count-jodoh");
+      const bsSelect = document.getElementById("count-bs");
+      const singkatSelect = document.getElementById("count-singkat");
+      
+      if (pgSelect) pgSelect.value = "5";
+      if (pgkSelect) pgkSelect.value = "2";
+      if (jodohSelect) jodohSelect.value = "1";
+      if (bsSelect) bsSelect.value = "1";
+      if (singkatSelect) singkatSelect.value = "1";
+
+      updateTotalSoalCount();
       generateSoalEngine();
       showToast("Data sampel Biologi SMA berhasil dimuat!", "info");
     });
@@ -1185,20 +1265,73 @@ Gunakan bahasa Indonesia baku yang edukatif, ilmiah, dan sesuai dengan karakteri
     document.getElementById("btn-reset-all").addEventListener("click", () => {
       inputSekolah.value = "";
       inputGuru.value = "";
-      inputMapel.value = "";
-      inputMateri.value = "";
+      inputMapel.value = "Informatika & Pemrograman Dasar";
+      inputMateri.value = "Algoritma Pemrograman: Struktur Percabangan (If-Else) dan Perulangan (Looping), Analisis Kasus Logika Kondisi, serta Pemecahan Masalah Alur Program Efisien.";
       selectJenjang.value = "SMK";
       updateDropdownKelas();
-      selectJumlah.value = "10";
-      tbodyKisi.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-400 text-xs">Belum ada data soal yang digenerate. Klik tombol "Generate Soal Simulasi" di atas.</td></tr>`;
-      containerLembarSoal.innerHTML = `<div class="p-6 text-center text-slate-400 text-xs italic">Belum ada lembar soal. Silakan klik tombol "Generate Soal Simulasi".</div>`;
-      containerKunciRubrik.innerHTML = `<div class="p-6 text-center text-slate-400 text-xs italic">Belum ada kunci jawaban & rubrik penilaian.</div>`;
+      
+      document.querySelectorAll(".checkbox-bentuk").forEach(cb => {
+        cb.checked = cb.dataset.type !== "Uraian Panjang";
+        const sel = document.querySelector(`.select-count-bentuk[data-type="${cb.dataset.type}"]`);
+        if (sel) {
+          sel.disabled = !cb.checked;
+          sel.value = DEFAULT_TYPE_COUNTS[cb.dataset.type] || "1";
+        }
+      });
+
+      updateTotalSoalCount();
       updatePreviewHeader();
+      generateSoalEngine();
       showToast("Formulir telah direset ke pengaturan awal.", "info");
     });
 
+    document.getElementById("btn-export-pdf").addEventListener("click", () => {
+      window.print();
+    });
+
+    document.getElementById("btn-export-word").addEventListener("click", () => {
+      const printAreaHtml = document.getElementById("print-area").innerHTML;
+      const mapelName = (inputMapel.value || "Asesmen").replace(/[^a-zA-Z0-9]/g, "_");
+      const fileName = `Asesmen_${mapelName}_${selectKelas.value}.doc`;
+
+      const wordDocContent = `
+        <html xmlns:o='urn:schemas-microsoft-com:office:office' 
+              xmlns:w='urn:schemas-microsoft-com:office:word' 
+              xmlns='http://www.w3.org/TR/REC-html40'>
+        <head>
+          <meta charset="utf-8">
+          <title>${fileName}</title>
+          <style>
+            body { font-family: 'Calibri', 'Arial', sans-serif; font-size: 11pt; line-height: 1.4; color: #111; }
+            table { border-collapse: collapse; width: 100%; margin-top: 12px; margin-bottom: 16px; }
+            th, td { border: 1px solid #777; padding: 6px 8px; font-size: 10pt; }
+            th { background-color: #f2f2f2; font-weight: bold; }
+            .print-kop { border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 14px; text-align: center; }
+            .tab-pane { display: block !important; margin-bottom: 24px; }
+            h2, h3 { color: #000; }
+          </style>
+        </head>
+        <body>
+          ${printAreaHtml}
+        </body>
+        </html>
+      `;
+
+      const blob = new Blob(['\ufeff' + wordDocContent], { type: 'application/msword' });
+      const downloadUrl = URL.createObjectURL(blob);
+      const tempLink = document.createElement("a");
+      tempLink.href = downloadUrl;
+      tempLink.download = fileName;
+      document.body.appendChild(tempLink);
+      tempLink.click();
+      document.body.removeChild(tempLink);
+      URL.revokeObjectURL(downloadUrl);
+
+      showToast("Dokumen Word (.doc) berhasil diunduh!", "success");
+    });
+
     window.addEventListener("DOMContentLoaded", () => {
-      initDropdownJumlahSoal();
+      initBentukSoalControls();
       updateDropdownKelas();
       generateSoalEngine();
     });
