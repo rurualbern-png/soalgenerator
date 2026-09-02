@@ -1052,8 +1052,65 @@
     /* =========================================================
        MESIN GENERATOR SOAL GEMINI AI (EXPONENTIAL BACKOFF)
        ========================================================= */
+    const modalApiKey = document.getElementById("modal-api-key");
+    const btnOpenApiModal = document.getElementById("btn-open-api-modal");
+    const btnCloseModal = document.getElementById("btn-close-modal");
+    const btnSaveApiKey = document.getElementById("btn-save-api-key");
+    const btnClearApiKey = document.getElementById("btn-clear-api-key");
+    const inputUserApiKey = document.getElementById("input-user-api-key");
+    const badgeAiStatus = document.getElementById("badge-ai-status");
+    const badgeAiIcon = document.getElementById("badge-ai-icon");
+
+    function getStoredApiKey() {
+      return localStorage.getItem("ruru_gemini_api_key") || "";
+    }
+
+    function updateAiBadgeUI() {
+      const currentKey = getStoredApiKey();
+      if (currentKey && currentKey.trim() !== "") {
+        btnOpenApiModal.className = "inline-flex items-center px-2.5 py-1.5 text-xs font-semibold rounded-lg border transition-colors cursor-pointer bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100";
+        badgeAiIcon.className = "fa-solid fa-circle-check mr-1.5 text-emerald-600";
+        badgeAiStatus.textContent = "Gemini AI Aktif";
+        inputUserApiKey.value = currentKey;
+      } else {
+        btnOpenApiModal.className = "inline-flex items-center px-2.5 py-1.5 text-xs font-semibold rounded-lg border transition-colors cursor-pointer bg-amber-50 text-amber-700 border-amber-200 hover:bg-amber-100";
+        badgeAiIcon.className = "fa-solid fa-key mr-1.5 text-amber-600";
+        badgeAiStatus.textContent = "Atur API Key AI";
+        inputUserApiKey.value = "";
+      }
+    }
+
+    btnOpenApiModal.addEventListener("click", () => {
+      modalApiKey.classList.remove("hidden");
+    });
+
+    btnCloseModal.addEventListener("click", () => {
+      modalApiKey.classList.add("hidden");
+    });
+
+    btnSaveApiKey.addEventListener("click", () => {
+      const keyVal = inputUserApiKey.value.trim();
+      if (keyVal === "") {
+        showToast("Masukkan API Key yang valid!", "warning");
+        return;
+      }
+      localStorage.setItem("ruru_gemini_api_key", keyVal);
+      modalApiKey.classList.add("hidden");
+      updateAiBadgeUI();
+      showToast("API Key Gemini berhasil disimpan! AI kini aktif di GitHub.", "success");
+    });
+
+    btnClearApiKey.addEventListener("click", () => {
+      localStorage.removeItem("ruru_gemini_api_key");
+      inputUserApiKey.value = "";
+      modalApiKey.classList.add("hidden");
+      updateAiBadgeUI();
+      showToast("API Key telah dihapus.", "info");
+    });
+
     async function fetchGeminiQuestions(mapel, topik, typeConfigs, totalSoal, dist, fase, jenjang, kelas) {
-      const apiKey = "";
+      // Prioritas kunci: 1. Disimpan user di localStorage, 2. Kunci bawaan/runtime
+      const apiKey = getStoredApiKey();
       const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
       const typeBreakdownPrompt = typeConfigs.map(c => `- ${c.type}: ${c.count} butir soal`).join("\n");
 
@@ -1201,6 +1258,11 @@ Output wajib berupa array JSON murni sesuai skema.`;
       // Fallback ke generator analisis kontekstual lokal jika offline / gagal
       if (!generatedItems || generatedItems.length === 0) {
         generatedItems = generateSmartLocalQuestions(mapel, topik, typeConfigs, dist, fase);
+        if (!getStoredApiKey()) {
+          showToast("Berjalan dalam mode template cadangan. Tambahkan API Key di tombol 'Atur API Key AI' agar hasil soal cerdas seperti di Canvas!", "warning");
+        }
+      } else {
+        showToast(`Berhasil menyusun ${totalSoal} butir soal cerdas dengan Gemini AI!`, "success");
       }
 
       btnMain.disabled = false;
@@ -1484,6 +1546,7 @@ Output wajib berupa array JSON murni sesuai skema.`;
     window.addEventListener("DOMContentLoaded", () => {
       initBentukSoalControls();
       updateDropdownKelas();
+      updateAiBadgeUI();
       generateSoalEngine();
     });
   </script>
